@@ -1,0 +1,159 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+
+    <!-- jquery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <title>Cops Near Me</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      .userpostchoice:active,
+      .active {
+        background-color: red;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1Ijoibm0zMzAyIiwiYSI6ImNsdWcwMnB4NDFzbWwya255c3RkdjA5bXMifQ.oA2RdHbCK_NE04O393GMUA";
+
+      const bounds = [
+        [-74.054487, 40.698474],
+        [-73.864873, 40.875623], // Southwest coordinate// Northeast coordinates
+      ];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const map = new mapboxgl.Map({
+          container: "map",
+          style: "mapbox://styles/mapbox/streets-v11",
+          center: [-73.974113, 40.781303],
+          zoom: 10,
+          maxBounds: bounds,
+        });
+
+        const usermarker = new mapboxgl.Marker({ draggable: true })
+          .setLngLat([-73.974113, 40.781303])
+          .addTo(map);
+
+        function onDragEnd() {
+          const lngLat = usermarker.getLngLat();
+          console.log(`Longitude: ${lngLat.lng}, Latitude: ${lngLat.lat}`);
+        }
+
+        marker.on("dragend", onDragEnd);
+
+        $(".userpostchoice").click(function (e) {
+          $(".userpostchoice").not(this).removeClass("active");
+          $(this).toggleClass("active");
+          e.preventDefault();
+        });
+      });
+
+      // Add dragend event listener to the marker
+    </script>
+
+    <div class="container-fluid">
+      <div class="row h-100">
+        <div class="col-4">
+          <div class="container">
+            <div class="row">
+              <div>Cops Near Me</div>
+            </div>
+            <div class="row">
+              To see police activity near you, drag the blue marker to your
+              location. Then enter a radius in miles and the types of posts you
+              want to view.
+            </div>
+            <div class="row">
+              <div>Enter your desired radius in miles</div>
+            </div>
+            <div class="row">
+              <input id="ukm" type="num" placeholder=".2" />
+            </div>
+            <div class="row">
+              <div>Enter what type of posts you want to view</div>
+            </div>
+            <div class="row">
+              <button
+                type="button"
+                data-bs-toggle="button"
+                class="userpostchoice btn btn-outline-dark"
+                id="subwaypost"
+              >
+                Subway posts
+              </button>
+              <button
+                type="button"
+                data-bs-toggle="button"
+                class="userpostchoice btn btn-outline-dark"
+                id="copsightingpost"
+              >
+                Cop sightings
+              </button>
+              <button
+                type="button"
+                data-bs-toggle="button"
+                class=" userpostchoice btn btn-outline-dark"
+                id="allposts"
+              >
+                All posts
+              </button>
+            </div>
+            <div class="row">
+              <button
+                type="button"
+                class="btn btn-outline-dark"
+                id="usersearch"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div id="map"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

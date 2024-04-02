@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+
+    <!-- jquery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+
+    <script
+      type="text/javascript"
+      src="{{url_for('static', filename='login.js')}}"
+    ></script>
+  </head>
+  <body>
+    <div>Welcome to Cops Near Me!</div>
+    <div>Please enter your phone number to get started:</div>
+    <div>Please only use numbers, no extra characters</div>
+    <div id="error"></div>
+    <input class="phnumber" id="unum" type="num" placeholder="0123456789" />
+    <button type="button" class="btn btn-outline-dark" id="phonenum">
+      Submit
+    </button>
+  </body>
+</html>
