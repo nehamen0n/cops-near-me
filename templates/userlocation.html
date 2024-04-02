@@ -14,14 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="data:," />
 
-    <!-- jquery -->
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
-    />
-
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -49,6 +41,15 @@
       .active {
         background-color: red;
         color: white;
+      }
+
+      .btn-check {
+        display: none;
+      }
+
+      .btn-check:checked + .btn {
+        background-color: #007bff;
+        border-color: #007bff;
       }
     </style>
   </head>
@@ -80,15 +81,44 @@
           console.log(`Longitude: ${lngLat.lng}, Latitude: ${lngLat.lat}`);
         }
 
-        marker.on("dragend", onDragEnd);
+        usermarker.on("dragend", onDragEnd);
 
-        $(".userpostchoice").click(function (e) {
-          $(".userpostchoice").not(this).removeClass("active");
-          $(this).toggleClass("active");
-          e.preventDefault();
+        const usersearchButton = document.getElementById("usersearch");
+        usersearchButton.addEventListener("click", () => {
+          // Get radius value
+          const radiusInput = document.getElementById("ukm").value;
+
+          // Check if radius is a number
+          if (isNaN(radiusInput) || radiusInput === "") {
+            document.getElementById("error").textContent =
+              "Please enter a valid number for the radius.";
+            return;
+          }
+
+          // Check if a post button is checked
+          const postButtons = document.querySelectorAll(".btn-check");
+          let postType = "";
+          postButtons.forEach((button) => {
+            if (button.checked) {
+              postType = button.id;
+            }
+          });
+          if (!postType) {
+            document.getElementById("error").textContent =
+              "Please select a post type.";
+            return;
+          }
+
+          // Clear any previous error messages
+          document.getElementById("error").textContent = "";
+
+          // Send radius and post type to the server
+          const data = {
+            radius: parseFloat(radiusInput),
+            postType: postType,
+          };
         });
       });
-
       // Add dragend event listener to the marker
     </script>
 
@@ -108,36 +138,43 @@
               <div>Enter your desired radius in miles</div>
             </div>
             <div class="row">
+              <div id="error"></div>
+            </div>
+            <div class="row">
               <input id="ukm" type="num" placeholder=".2" />
             </div>
             <div class="row">
               <div>Enter what type of posts you want to view</div>
             </div>
             <div class="row">
-              <button
-                type="button"
-                data-bs-toggle="button"
-                class="userpostchoice btn btn-outline-dark"
-                id="subwaypost"
+              <input
+                type="radio"
+                class="btn-check"
+                name="options"
+                id="option1"
+                autocomplete="off"
+              />
+              <label class="btn btn-secondary" for="option1"
+                >Subway Posts</label
               >
-                Subway posts
-              </button>
-              <button
-                type="button"
-                data-bs-toggle="button"
-                class="userpostchoice btn btn-outline-dark"
-                id="copsightingpost"
+              <input
+                type="radio"
+                class="btn-check"
+                name="options"
+                id="option2"
+                autocomplete="off"
+              />
+              <label class="btn btn-secondary" for="option2"
+                >Cop Sightings</label
               >
-                Cop sightings
-              </button>
-              <button
-                type="button"
-                data-bs-toggle="button"
-                class=" userpostchoice btn btn-outline-dark"
-                id="allposts"
-              >
-                All posts
-              </button>
+              <input
+                type="radio"
+                class="btn-check"
+                name="options"
+                id="option3"
+                autocomplete="off"
+              />
+              <label class="btn btn-secondary" for="option3">All Posts</label>
             </div>
             <div class="row">
               <button
