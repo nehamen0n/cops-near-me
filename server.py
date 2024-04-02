@@ -184,8 +184,13 @@ def userlocation():
 def savelocation():
 	global usernum
 	json_data = request.get_json()
+	posttype= json_data["postType"]
 	
 	return jsonify(json_data=json_data)
+
+@app.route('/add_location')
+def add_location():
+	return render_template('useradd.html', usernum=usernum)
 
 
 #
