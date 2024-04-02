@@ -13,6 +13,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="data:," />
+    <!-- jquery -->
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
 
     <!-- Bootstrap CSS -->
     <link
@@ -122,15 +129,34 @@
               "Please select a post type.";
             return;
           }
-
           // Clear any previous error messages
           document.getElementById("error").textContent = "";
-
+          lngLat = usermarker.getLngLat();
           // Send radius and post type to the server
           const data = {
             radius: parseFloat(radiusInput),
             postType: postType,
+            userlong: lngLat.lng,
+            userlat: lngLat.lat,
           };
+
+          $.ajax({
+            type: "POST",
+            url: "save_location",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            success: function (result) {
+              console.log("sucess");
+              console.log(result);
+            },
+            error: function (request, status, error) {
+              console.log("Error");
+              console.log(request);
+              console.log(status);
+              console.log(error);
+            },
+          });
         });
       });
       // Add dragend event listener to the marker
@@ -165,30 +191,28 @@
                 type="radio"
                 class="btn-check"
                 name="options"
-                id="option1"
+                id="Subway"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="option1"
-                >Subway Posts</label
-              >
+              <label class="btn btn-secondary" for="Subway">Subway Posts</label>
               <input
                 type="radio"
                 class="btn-check"
                 name="options"
-                id="option2"
+                id="Sightings"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="option2"
+              <label class="btn btn-secondary" for="Sightings"
                 >Cop Sightings</label
               >
               <input
                 type="radio"
                 class="btn-check"
                 name="options"
-                id="option3"
+                id="Posts"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="option3">All Posts</label>
+              <label class="btn btn-secondary" for="Posts">All Posts</label>
             </div>
             <div class="row">
               <button

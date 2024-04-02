@@ -180,6 +180,14 @@ def unumber():
 def userlocation():
 	return render_template('userlocation.html', usernum=usernum)
 
+@app.route('/save_location', methods=['GET','POST'])
+def savelocation():
+	global usernum
+	json_data = request.get_json()
+	
+	return jsonify(json_data=json_data)
+
+
 #
 # This is an example of a different path.  You can see it at:
 # 
