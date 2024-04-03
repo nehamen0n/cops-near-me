@@ -192,6 +192,11 @@ def savelocation():
 def add_location():
 	return render_template('useradd.html', usernum=usernum)
 
+@app.route('/add_post')
+def add_post():
+	
+	return jsonify(data=data)
+
 
 #
 # This is an example of a different path.  You can see it at:

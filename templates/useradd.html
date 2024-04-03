@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,18 +11,12 @@
       href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
       type="text/css"
     />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="data:," />
-    <!-- jquery -->
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <link
       rel="stylesheet"
       href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
     />
-
-    <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
@@ -38,25 +33,24 @@
         margin: 0;
         padding: 0;
       }
-
       #map {
         width: 100%;
-        height: 100%;
+        height: 100vh;;
       }
-
       .userpostchoice:active,
       .active {
         background-color: red;
         color: white;
       }
-
       .btn-check {
         display: none;
       }
-
       .btn-check:checked + .btn {
         background-color: #007bff;
         border-color: #007bff;
+      }
+      .additional-info {
+        display: none;
       }
     </style>
     <script>
@@ -67,6 +61,7 @@
         [-74.054487, 40.698474],
         [-73.864873, 40.875623], // Southwest coordinate// Northeast coordinates
       ];
+
       document.addEventListener("DOMContentLoaded", () => {
         const map = new mapboxgl.Map({
           container: "map",
@@ -86,18 +81,119 @@
         }
 
         usermarker.on("dragend", onDragEnd);
+
+        const sightingTypeRadios = document.querySelectorAll(
+          'input[name="options"]'
+        );
+        const additionalInfoDiv = document.getElementById("additional-info");
+
+        sightingTypeRadios.forEach((radio) => {
+          radio.addEventListener("change", function () {
+            if (this.value === "Subway") {
+              additionalInfoDiv.innerHTML = ""; // Clear previous content
+              // Add input for number of cops
+              additionalInfoDiv.innerHTML =
+                '<label for="numberOfCops">Number of Cops:</label>' +
+                '<input type="number" id="numberOfCops" name="numberOfCops">';
+              additionalInfoDiv.style.display = "block"; // Show the additional info div
+            } else if (this.value === "Sightings") {
+              additionalInfoDiv.innerHTML = ""; // Clear previous content
+              // Add input for number of cops and type of cops
+              additionalInfoDiv.innerHTML =
+                '<label for="numberOfCops">Number of Cops:</label>' +
+                '<input type="number" id="numberOfCops" name="numberOfCops">' +
+                '<label for="typeOfCops">Type of Cops:</label>' +
+                '<input type="text" id="typeOfCops" name="typeOfCops">';
+              additionalInfoDiv.style.display = "block"; // Show the additional info div
+            } else {
+              additionalInfoDiv.innerHTML = ""; // Clear previous content
+              additionalInfoDiv.style.display = "none"; // Hide the additional info div
+            }
+          });
+        });
+
+        const submitDiv = document.getElementById("useradd");
+
+        
+
+
       });
     </script>
   </head>
   <body>
     <div class="container-fluid">
-        <div class="row h-100">
-            <div class="col-4">
+      <div class="row">
+        <div class="col-4">
+          <div class="row">
+            <div>
+              Drag the marker to the location of the incident you are reporting
             </div>
-            <div class="col-8">
-                <div id="map"></div>
-            </div>
+          </div>
+          <div class="row">
+            <div class="error"></div>
+          </div>
+          <div class="row">Enter the location name (optional)</div>
+          <div class="row">
+            <input id="postloc" type="text" placeholder="Grand Central" />
+          </div>
+          <div class="row">Enter address (optional)</div>
+          <div class="row">
+            <input
+              id="postaddy"
+              type="text"
+              placeholder="89 E 42nd St, New York, NY 10017"
+            />
+          </div>
+          <div class="row">Description (optional)</div>
+          <div class="row">
+            <input
+              id="postdesc"
+              type="text"
+              placeholder="cops giving out tickets"
+            />
+          </div>
+          <div class="row">
+            <div>Sighting or Subway?</div>
+          </div>
+          <div class="row">
+            <input
+              type="radio"
+              class="btn-check"
+              name="options"
+              id="Subway"
+              autocomplete="off"
+              value="Subway"
+            />
+            <label class="btn btn-secondary" for="Subway">Subway Posts</label>
+            <input
+              type="radio"
+              class="btn-check"
+              name="options"
+              id="Sightings"
+              autocomplete="off"
+              value="Sightings"
+            />
+            <label class="btn btn-secondary" for="Sightings"
+              >Cop Sightings</label
+            >
+          </div>
+          <div class="row" id="additional-info" class="additional-info">
+            <!-- Additional input fields for number of cops and type of cops will be inserted here -->
+          </div>
+          <div class="row">
+            <button
+                type="button"
+                class="btn btn-outline-dark"
+                id="useradd"
+              >
+                Submit
+              </button>
+          </div>
         </div>
+        <div class="col-8">
+          <div id="map"></div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
