@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    You do not have permission to view this page.
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      id="useradd"
+      onclick="location.href='{{ url_for('userlocation') }}'"
+    >
+      Return to view posts near your locaiton
+    </button>
+  </body>
+</html>

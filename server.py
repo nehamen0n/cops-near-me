@@ -201,18 +201,22 @@ def add_post():
 
 	return jsonify(json_data=json_data)
 
+@app.route('/modcheck')
+def modcheck():
+	global usernum
+	#perm = uery user num in mod table to see if user has mod permissions (y/n).
+	perm='y'
+	if perm == 'y':
+		return render_template('moderator.html')
+	else:
+		return render_template('reject.html')
+	
+@app.route('/modgen',methods=['GET','POST'])
+def modgen():
+	# run uery to get all posts, and make dictionary of all posts
+	data={} # delete, send back all posts back to front end
+	return jsonify(data=data)
 
-#
-# This is an example of a different path.  You can see it at:
-# 
-#     localhost:8111/another
-#
-# Notice that the function name is another() rather than index()
-# The functions for each app.route need to have different names
-#
-@app.route('/another')
-def another():
-	return render_template("another.html")
 
 
 # Example of adding new data to the database
