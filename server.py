@@ -192,7 +192,7 @@ def savelocation():
 def add_location():
 	return render_template('useradd.html', usernum=usernum)
 
-@app.route('/add_post')
+@app.route('/add_post', methods=['GET','POST'])
 def add_post():
 	global usernum
 	json_data = request.get_json()
