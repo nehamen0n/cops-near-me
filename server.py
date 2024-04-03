@@ -7,6 +7,7 @@ Go to http://localhost:8111 in your browser.
 A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
 """
+import math
 import os
   # accessible as a variable in index.html:
 from sqlalchemy import *
@@ -184,39 +185,102 @@ def userlocation():
 def savelocation():
 	global usernum
 	json_data = request.get_json()
-	posttype= json_data["postType"]
+
+	# get the type of post selected by the user + lat, long + radius
+	post_type = json_data['postType']
+	userlong = json_data['userlong']
+	userlat = json_data['userlat']
+	radius = json_data['radius']
+
+	# define dictionary of potential types of sql queries
+	post_queries = {
+		# combo of both 'SIGHTING' and 'SUBWAY'
+        'Post': """
+            SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 
+                   S.cop_number, S.type_of_cop 
+            FROM Post P 
+            JOIN Sighting S ON P.post_id = S.post_id 
+            WHERE P.visible = 'Y'
+            UNION
+            SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 
+                   SS.subway_station_name, SS.color_visibility 
+            FROM Post P 
+            JOIN Subway_Station SS ON P.location_name = SS.subway_station_name 
+            WHERE P.visible = 'Y'
+        """,
+		# 'SIGHTING'
+        'Sighting': """
+            SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 
+                   S.cop_number, S.type_of_cop 
+            FROM Post P 
+            JOIN Sighting S ON P.post_id = S.post_id 
+            WHERE P.visible = 'Y'
+        """,
+		# 'SUBWay'
+        'Subway': """
+            SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 
+                   SS.subway_station_name, SS.color_visibility 
+            FROM Post P 
+            JOIN Subway_Station SS ON P.location_name = SS.subway_station_name 
+            WHERE P.visible = 'Y'
+        """
+    }
+
+	# retrieve specific sql query
+	select_query = post_queries.get(post_type)
+
+	cursor = g.conn.executive(text(select_query))
+
+	locations = []
+	for result in cursor:
+		location_name = result[2]
+		latitude, longitude = result[0], result[1]
+
+		# calculate distance to see what needs to be visible
+		distance = haversine(userlat, userlong, latitude, longitude)
+		if distance <= radius:
+			locations.append(result)
+		
+		cursor.close()
+		return jsonify(data = locations)
 	
-	return jsonify(json_data=json_data)
+def haversine(lat1, long1, lat2, long2):
+    import math
 
-@app.route('/add_location')
-def add_location():
-	return render_template('useradd.html', usernum=usernum)
+    # Radius of earth in miles
+    R = 3959
+    # Converting latitude and longitude from degrees to radians
+    lat1 = math.radians(lat1)
+    long1 = math.radians(long1)
+    lat2 = math.radians(lat2)
+    long2 = math.radians(long2)
 
-@app.route('/add_post', methods=['GET','POST'])
-def add_post():
-	global usernum
-	json_data = request.get_json()
-	adddata= json_data
+    # Calculating the difference
+    dlon = long2 - long1
+    dlat = lat2 - lat1
+
+    # Haversine formula
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    # Calculate distance
+    distance = R * c
+    return distance
 	
 
-	return jsonify(json_data=json_data)
 
-@app.route('/modcheck')
-def modcheck():
-	global usernum
-	#perm = uery user num in mod table to see if user has mod permissions (y/n).
-	perm='y'
-	if perm == 'y':
-		return render_template('moderator.html')
-	else:
-		return render_template('reject.html')
-	
-@app.route('/modgen',methods=['GET','POST'])
-def modgen():
-	# run uery to get all posts, and make dictionary of all posts
-	data={} # delete, send back all posts back to front end
-	return jsonify(data=data)
 
+#
+# This is an example of a different path.  You can see it at:
+# 
+#     localhost:8111/another
+#
+# Notice that the function name is another() rather than index()
+# The functions for each app.route need to have different names
+#
+@app.route('/another')
+def another():
+	return render_template("another.html")
 
 
 # Example of adding new data to the database
