@@ -194,8 +194,12 @@ def add_location():
 
 @app.route('/add_post')
 def add_post():
+	global usernum
+	json_data = request.get_json()
+	adddata= json_data
 	
-	return jsonify(data=data)
+
+	return jsonify(json_data=json_data)
 
 
 #

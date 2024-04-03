@@ -35,7 +35,7 @@
       }
       #map {
         width: 100%;
-        height: 100vh;;
+        height: 100vh;
       }
       .userpostchoice:active,
       .active {
@@ -86,6 +86,7 @@
           'input[name="options"]'
         );
         const additionalInfoDiv = document.getElementById("additional-info");
+        const Posttype = null;
 
         sightingTypeRadios.forEach((radio) => {
           radio.addEventListener("change", function () {
@@ -95,7 +96,8 @@
               additionalInfoDiv.innerHTML =
                 '<label for="numberOfCops">Number of Cops:</label>' +
                 '<input type="number" id="numberOfCops" name="numberOfCops">';
-              additionalInfoDiv.style.display = "block"; // Show the additional info div
+              additionalInfoDiv.style.display = "block";
+              Posttype = this.value; // Show the additional info div
             } else if (this.value === "Sightings") {
               additionalInfoDiv.innerHTML = ""; // Clear previous content
               // Add input for number of cops and type of cops
@@ -104,7 +106,8 @@
                 '<input type="number" id="numberOfCops" name="numberOfCops">' +
                 '<label for="typeOfCops">Type of Cops:</label>' +
                 '<input type="text" id="typeOfCops" name="typeOfCops">';
-              additionalInfoDiv.style.display = "block"; // Show the additional info div
+              additionalInfoDiv.style.display = "block";
+              Posttype = this.value; // Show the additional info div
             } else {
               additionalInfoDiv.innerHTML = ""; // Clear previous content
               additionalInfoDiv.style.display = "none"; // Hide the additional info div
@@ -112,11 +115,51 @@
           });
         });
 
-        const submitDiv = document.getElementById("useradd");
+        const submitbutton = document.getElementById("submitButton");
+        const errordiv = document.getElementById("error");
 
-        
+        submitButton.addEventListener("click", function () {
+          const locationName = document.getElementById("postloc").value;
+          const address = document.getElementById("postaddy").value;
+          const description = document.getElementById("postdesc").value;
 
+          if (!Posttype) {
+            errordiv.innerHTML = "Please select a type of post";
+            return;
+          } else if (!numberOfCops) {
+            errordiv.innerHTML = "Please enter a number of cops";
+            return;
+          } else if (Posttype === "Sighting" && !typeOfCops) {
+            errordiv.innerHTML = "Please enter a type of cop";
+            return;
+          } else {
+            const data = {
+              locationName: locationName,
+              address: address,
+              description: description,
+              numberOfCops: numberOfCops,
+              typeOfCops: typeOfCops,
+            };
 
+            $.ajax({
+              type: "POST",
+              url: "add_post",
+              dataType: "json",
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify(data),
+              success: function (result) {
+                console.log("sucess");
+                console.log(result);
+              },
+              error: function (request, status, error) {
+                console.log("Error");
+                console.log(request);
+                console.log(status);
+                console.log(error);
+              },
+            });
+          }
+        });
       });
     </script>
   </head>
@@ -181,13 +224,9 @@
             <!-- Additional input fields for number of cops and type of cops will be inserted here -->
           </div>
           <div class="row">
-            <button
-                type="button"
-                class="btn btn-outline-dark"
-                id="useradd"
-              >
-                Submit
-              </button>
+            <button type="button" class="btn btn-outline-dark" id="submitButton">
+              Submit
+            </button>
           </div>
         </div>
         <div class="col-8">
