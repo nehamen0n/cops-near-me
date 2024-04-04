@@ -370,13 +370,21 @@ def modgen():
 
 @app.route ('/delete_post/<post_id>', methods =['GET','POST'])
 def delete_post(post_id=None):
-	delete_query = "DELETE FROM Post WHERE post_id = :post_id CASCADE"
+	delete_query = "DELETE FROM Post WHERE post_id = :post_id"
 	g.conn.execute(text(delete_query), {'post_id': post_id})
 	g.conn.commit()
 	return render_template('moderator.html')
 
 @app.route('/toggle_vis/<post_id>', methods =['GET','POST'])
 def toggle_vis(post_id=None):
+	check_query = "SELECT visibility WHERE post_id = :post_id"
+	temp=g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
+	if temp[0]=='Y':
+		update_query = "UPDATE Post SET visibility = 'N' WHERE post_id = :post_id"
+	else:
+		update_query = "UPDATE Post SET visibility = 'Y'  WHERE post_id = :post_id"
+	g.conn.execute(text(update_query), {'post_id': post_id})
+	g.conn.commit()
 	return print(post_id)
 
 @app.route('/user_cred/<user_id>',methods =['GET','POST'])
