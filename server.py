@@ -324,7 +324,7 @@ def modgen():
 
 	select_query = "SELECT * FROM Post"
 	result = g.conn.execute(text(select_query))
-	subwaypostid_query = "SELECT post_id FROM Post"
+	subwaypostid_query = "SELECT post_id FROM Subway_Post"
 	subwayid = g.conn.execute(text(subwaypostid_query))
 	data={}
 	currid=0
