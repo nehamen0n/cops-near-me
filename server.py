@@ -237,7 +237,7 @@ def savelocation():
 				'date_reported':result[4],
 				'date_resolved':result[5],
 			}
-			locations.append(temp)
+			locations.update({currlocationid:temp})
 			currlocationid+=1
 		
 	cursor.close()
