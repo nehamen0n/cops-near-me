@@ -370,7 +370,7 @@ def modgen():
 
 @app.route ('/delete_post/<post_id>', methods =['GET','POST'])
 def delete_post(post_id=None):
-	delete_query = "DELETE FROM Post WHERE post_id = :post_id;"
+	delete_query = "DELETE FROM Post WHERE post_id = :post_id CASCADE"
 	g.conn.execute(text(delete_query), {'post_id': post_id})
 	g.conn.commit()
 	return render_template('moderator.html')
