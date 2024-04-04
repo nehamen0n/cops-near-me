@@ -334,6 +334,7 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
+		print(object[0])
 		print(object[1])
 		print(object[2])
 		print(object[3])
