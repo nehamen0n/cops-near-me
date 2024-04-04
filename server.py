@@ -370,10 +370,8 @@ def modgen():
 			cop_number=thing[0]
 			type_of_cop=thing[1]
 
-		print(object[7])
 		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
 		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
-		print(user_cred)
 
 		temp={
 			'post_id':object[0],
@@ -394,7 +392,7 @@ def modgen():
 		}
 		data.update({currid:temp})
 		currid+=1
-		result.close()
+	result.close()
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
