@@ -351,11 +351,9 @@ def modgen():
 	result = g.conn.execute(text(select_query))
 	subwaypostid_query = "SELECT post_id FROM Subway_Post"
 	subwayid = [row[0] for row in g.conn.execute(text(subwaypostid_query))]
-	print(subwayid)
 	data={}
 	currid=0
 	for object in result:
-		print(object[0])
 
 		if object[0] in subwayid:
 			postType='SUBWAY'
@@ -372,6 +370,7 @@ def modgen():
 			cop_number=thing[0]
 			type_of_cop=thing[1]
 
+		print(object[7])
 		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
 		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
 		print(user_cred)
