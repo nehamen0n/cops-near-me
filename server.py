@@ -335,12 +335,11 @@ def modcheck():
 
 	perms_query="SELECT user_id FROM Moderator WHERE user_id = :usernum"
 	result = g.conn.execute(text(perms_query), {'usernum': usernum}).fetchone()
-	print(result)
 	if result:
 		perm='Y'
 	else:
 		perm='N'
-
+	result.close()
 	if perm == 'Y':
 		return render_template('moderator.html')
 	else:
@@ -391,6 +390,8 @@ def modgen():
 		}
 		data.update({currid:temp})
 		currid+=1
+	result.close()
+	subwayid.close()
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
@@ -406,6 +407,7 @@ def toggle_vis(post_id=None):
 		update_query = "UPDATE Post SET visible = 'Y'  WHERE post_id = :post_id"
 	g.conn.execute(text(update_query), {'post_id': post_id})
 	g.conn.commit()
+	temp.close()
 	return print(post_id)
 
 @app.route('/user_cred/<user_id>',methods =['GET','POST'])
