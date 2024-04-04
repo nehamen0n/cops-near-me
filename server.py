@@ -373,6 +373,9 @@ def modgen():
 		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
 		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
 
+		print(cop_number)
+		print(type_of_cop)
+
 		temp={
 			'post_id':object[0],
 			'location_name':object[1],
