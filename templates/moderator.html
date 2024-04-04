@@ -95,9 +95,9 @@
                   // Different color markers based on query
                   console.log(post.post_id);
                   let markerColor = "#FF0000";
-                  if (post.post_type === "SUBWAY") {
+                  if (post.postType === "SUBWAY") {
                     markerColor = "#00FF00"; // green for no cops
-                  } else if (post.post_type === "SIGHTING") {
+                  } else if (post.postType === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
                   }
 
@@ -121,7 +121,9 @@
                       (post.type_of_cop !== undefined
                         ? `<p>Type of Cops: ${post.type_of_cop}</p>`
                         : " ")+
-                        `<p>Visible: ${post.visible}</p>`
+                        `<p>Visible: ${post.visible}</p>` +
+                        `<p>Poster id: ${post.user_id}</p>` +
+                        `<p></p>`
                   );
                   postMarker.setPopup(popup);
                 }
