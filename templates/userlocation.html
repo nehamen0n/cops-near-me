@@ -197,9 +197,9 @@
                   postMarker.getElement().classList.add("post-marker");
 
                   if (location.time_resolved !== null) {
-                    time_res_intert = `<p>Date Resolved: ${location.date_resolved}</p>`;
+                    var time_res_intert = `<p>Date Resolved: ${location.date_resolved}</p>`;
                   } else {
-                    time_res_insert = `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`;
+                    var time_res_insert = `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`;
                   }
 
                   // Create a popup for the marker
