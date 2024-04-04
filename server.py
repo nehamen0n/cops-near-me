@@ -218,7 +218,7 @@ def savelocation():
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
-        'Post': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, NULL AS cop_number, SS.color_visibility FROM Post P JOIN Subway_Station SS ON P.location_name = SS.subway_station_name WHERE P.visible = 'Y'",
+        'Post': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, NULL AS cop_number, SS.color_visibility FROM Post P JOIN Subway_Station SS ON P.location_name = SS.subway_station_name WHERE P.visible = 'Y'",
 		# 'SIGHTING'
         'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
@@ -248,6 +248,7 @@ def savelocation():
 				'description':result[3],
 				'date_reported':result[4],
 				'date_resolved':result[5],
+				'post_type': post_type
 			}
 			locations.update({currlocationid:temp})
 			currlocationid+=1
