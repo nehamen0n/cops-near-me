@@ -164,15 +164,18 @@
                   postMarker.classList.add("post-marker");
 
                   // Create a popup for the marker
-                  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
+                  postmarker.setPopup(popup)
+                  /*
                   postMarker.addEventListener("click", () => {
                     popup.addTo(map);
                   });
+                  */
                 }
               }
             },
