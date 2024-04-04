@@ -162,6 +162,21 @@
             success: function (result) {
               console.log(result);
               clearMarkers();
+              for (const subid in result.substation) {
+                const subwayMarker = new mapboxgl.Marker({
+                  color: "#00FF00", // Green color for subway markers
+                  draggable: false,
+                })
+                  .setLngLat([substation.postlong, substation.postlat])
+                  .addTo(map);
+
+                subwayMarker.getElement().classList.add("post-marker");
+
+                const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  `<h3>${substation.location_name}</h3>` 
+                );
+                subwayMarker.setPopup(popup);
+              }
 
               // Create new markers for each location returned in the results
               for (const locationId in result.locations) {
@@ -202,10 +217,10 @@
                     var time_res_insert = `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`;
                   }
 
-                  if (location.type_of_cop !== null){
+                  if (location.type_of_cop !== null) {
                     var coptype = `<p>Type of Cops: ${location.type_of_cop}</p>`;
-                  }else{
-                    var coptype =``
+                  } else {
+                    var coptype = ``;
                   }
 
                   // Create a popup for the marker
