@@ -189,6 +189,7 @@ def unumber():
 	if not result:
 		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'y')"
 		g.conn.execute(text(add_query), {'usernum': usernum})
+		g.conn.commit()
 	return jsonify(json_data=json_data)
    
 
@@ -210,6 +211,7 @@ def savelocation():
 
 	update_query = "UPDATE Users SET latitude = :userlat, longitude = :userlong WHERE user_id = :unum"
 	g.conn.execute(text(update_query), {'userlat': userlat, 'userlong': userlong, 'unum': usernum})
+	g.conn.commit()
 
 	if show_precinct ==true:
 		precinct_query = "SELECT "
@@ -252,7 +254,7 @@ def savelocation():
 				'post_type': actual_post_type
 			}
 			locations.update({currlocationid:temp})
-			currlocationid+=1
+			currlocationid+=1	
 		
 	cursor.close()
 	return jsonify(locations = locations)
@@ -323,15 +325,19 @@ def add_post():
 
 	add_query = "INSERT INTO Post (post_id, latitude, longitude, location_name, address, date_reported, date_resolved, visible, description, user_id) VALUES (:post_id, :postlat, :postlong, :location_name, :address, now(), NULL, 'y', :description, :user_id)"
 	g.conn.execute(text(add_query), {'post_id': post_id, 'postlat': postlat, 'postlong':postlong,'location_name':location_name,'address':address,'description':description, 'user_id': usernum})
+	g.conn.commit()
 
 	if post_type == 'Sighting':
 		sight_query= "INSERT INTO Sighting (post_id, user_id, cop_number, type_of_cop) VALUES (:post_id, :user_id, :cop_number, :type_of_cop)"
 		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops,'type_of_cop':typeOfCops})
+		g.conn.commit()
 	else:
 		sub_query= "INSERT INTO Subway_Post (post_id, user_id, cop_number) VALUES (:post_id, :user_id, :cop_number)"
 		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
+		g.conn.commit()
 
-
+	
+	
 
 	return jsonify(json_data=json_data)
 
