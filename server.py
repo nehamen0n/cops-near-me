@@ -317,7 +317,7 @@ def add_subway_stations(userlat, userlong, radius):
 
 def add_precint(userlat, userlong, radius):
 	# query subway stations from database
-	precinct_query = "SELECT latitude, longitude, precinct_name, precinct_number FROM Precicnt"
+	precinct_query = "SELECT latitude, longitude, precinct_name, precinct_number FROM Precinct"
 	cursor = g.conn.execute(text(precinct_query))
 	precinct= {}
 	currid=0
