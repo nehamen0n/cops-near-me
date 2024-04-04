@@ -328,8 +328,21 @@ def modcheck():
 
 @app.route('/modgen',methods=['GET','POST'])
 def modgen():
+
+	select_query = "SELECT * FROM Post"
+	result = g.conn.execute(text(select_query))
+	data={}
+	currid=0
+	for object in result:
+		print(object[1])
+		print(object[2])
+		print(object[3])
+		print(object[4])
+		print(object[5])
+		print(object[6])
+		print(object[7])
 	# run uery to get all posts, and make dictionary of all posts
-	data={} # delete, send back all posts back to front end
+	 # delete, send back all posts back to front end
 	return jsonify(data=data)
 
 @app.route('/add_location')
