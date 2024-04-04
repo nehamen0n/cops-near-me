@@ -330,6 +330,8 @@ def modgen():
 	currid=0
 	for object in result:
 		for thing in subwayid:
+			print(object[0])
+			print(thing[0])
 			if object[0] == thing[0]:
 				postType='SUBWAY'
 			else:
