@@ -218,19 +218,30 @@ def savelocation():
 
 	cursor = g.conn.execute(text(select_query))
 
-	#locations = []
+	locations = {}
+	currlocationid=0
 	for result in cursor:
 		print(result)
-		#location_name = result[2]
-		#latitude, longitude = result[0], result[1]
+		location_name = result[2]
+		latitude, longitude = result[0], result[1]
 
 		# calculate distance to see what needs to be visible
-		#distance = haversine(userlat, userlong, latitude, longitude)
-		#if distance <= radius:
-			#locations.append(result)
+		distance = haversine(userlat, userlong, latitude, longitude)
+		if distance <= radius:
+			temp={
+				'id': currlocationid,
+				'postlat': latitude,
+				'postlong': longitude,
+				'locationname': location_name,
+				'description':result[3],
+				'date_reported':result[4],
+				'date_resolved':result[5],
+			}
+			locations.append(temp)
+			currlocationid+=1
 		
 	cursor.close()
-	return jsonify(locations = json_data)
+	return jsonify(locations = locations)
 	
 def haversine(lat1, long1, lat2, long2):
     import math
