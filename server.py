@@ -329,10 +329,8 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
-		
 		if object[0] in subwayid:
 			postType='SUBWAY'
-			break
 		else:
 			postType ='SIGHTING'
 
