@@ -189,6 +189,7 @@ def unumber():
 	if not result:
 		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'y')"
 		g.conn.execute(text(add_query), {'usernum': usernum})
+		g.conn.commit()
 	return jsonify(json_data=json_data)
    
 
@@ -210,6 +211,7 @@ def savelocation():
 
 	update_query = "UPDATE Users SET latitude = :userlat, longitude = :userlong WHERE user_id = :unum"
 	g.conn.execute(text(update_query), {'userlat': userlat, 'userlong': userlong, 'unum': usernum})
+	g.conn.commit()
 
 	if show_precinct ==true:
 		precinct_query = "SELECT "
@@ -251,7 +253,7 @@ def savelocation():
 				'post_type': post_type
 			}
 			locations.update({currlocationid:temp})
-			currlocationid+=1
+			currlocationid+=1	
 		
 	cursor.close()
 	return jsonify(locations = locations)
@@ -330,7 +332,8 @@ def add_post():
 		sub_query= "INSERT INTO Subway_Post (post_id, user_id, cop_number) VALUES (:post_id, :user_id, :cop_number)"
 		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
 
-
+	g.conn.commit()
+	
 
 	return jsonify(json_data=json_data)
 
