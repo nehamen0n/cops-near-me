@@ -179,6 +179,23 @@
                 subwayMarker.setPopup(popup);
               }
 
+              for (const preid in result.precinct) {
+                const precinct = result.precinct[preid]
+                const precinctMarker = new mapboxgl.Marker({
+                  color: "#FFC0CB", // pink color for precinct
+                  draggable: false,
+                })
+                  .setLngLat([precinct.prelong, precinct.prelat])
+                  .addTo(map);
+
+                subwayMarker.getElement().classList.add("post-marker");
+
+                const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  `<h3>${precinct.pre_name}</h3>` 
+                );
+                subwayMarker.setPopup(popup);
+              }
+
               // Create new markers for each location returned in the results
               for (const locationId in result.locations) {
                 if (Object.hasOwnProperty.call(result.locations, locationId)) {
