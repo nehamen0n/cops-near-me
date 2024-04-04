@@ -334,6 +334,9 @@ def modgen():
 		else:
 			postType ='SIGHTING'
 
+		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
+		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
+
 		temp={
 			'post_id':object[0],
 			'location_name':object[1],
@@ -346,7 +349,8 @@ def modgen():
 			'user_id': object[7],
 			'postlat': object[8],
 			'postlong':object[9],
-			'postType': postType
+			'postType': postType,
+			'user_cred':user_cred
 		}
 		data.update({currid:temp})
 		currid+=1
@@ -356,8 +360,15 @@ def modgen():
 
 @app.route ('/delete_post/<post_id>', methods =['GET','POST'])
 def delete_post(post_id=None):
-
 	return print(post_id)
+
+@app.route('/toggle_vis/<post_id>', methods =['GET','POST'])
+def toggle_vis(post_id=None):
+	return print(post_id)
+
+@app.route('/user_cred/<user_id>',methods =['GET','POST'])
+def user_cred(user_id=None):
+	return print(user_id)
 
 @app.route('/add_location')
 def add_location():
