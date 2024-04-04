@@ -336,7 +336,6 @@ def modgen():
 
 		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
 		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
-		print(user_cred)
 
 		temp={
 			'post_id':object[0],
@@ -351,7 +350,7 @@ def modgen():
 			'postlat': object[8],
 			'postlong':object[9],
 			'postType': postType,
-			'user_cred':user_cred
+			'user_cred':user_cred[0]
 		}
 		data.update({currid:temp})
 		currid+=1
