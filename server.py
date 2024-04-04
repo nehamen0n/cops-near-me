@@ -220,7 +220,7 @@ def savelocation():
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
-        'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
+        'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'",
 		# 'SIGHTING'
         'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
