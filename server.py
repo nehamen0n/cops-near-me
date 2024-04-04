@@ -176,7 +176,7 @@ def unumber():
 
     # Check if the phone number exists in the database
 	select_query = "SELECT user_id FROM Users WHERE user_id = :unum"
-	result = g.conn.execute(text(select_query), {'unum': unum}).fetchone()
+	result = g.conn.execute(text(select_query), {'usernum': usernum}).fetchone()
 
     # If the phone number doesn't exist, insert a new row
 	if not result:
