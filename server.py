@@ -390,8 +390,6 @@ def modgen():
 		}
 		data.update({currid:temp})
 		currid+=1
-	result.close()
-	subwayid.close()
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
