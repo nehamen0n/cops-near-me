@@ -261,7 +261,7 @@ def savelocation():
 			type_of_cop = result[8]
 			subway_station_name = None
 			color_visibility = None
-		elif post_type == 'Subway':
+		else:
 			cop_number = None
 			type_of_cop = None
 			subway_station_name = result[7]
@@ -339,6 +339,7 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
+		print(object[0])
 		print(object[1])
 		print(object[2])
 		print(object[3])
