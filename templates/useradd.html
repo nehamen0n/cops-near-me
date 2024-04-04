@@ -99,7 +99,7 @@
                 '<div id="typeOfCops"></div>';
               additionalInfoDiv.style.display = "block";
               Posttype = "Subway"; // Show the additional info div
-            } else if (this.value === "Sightings") {
+            } else if (this.value === "Sighting") {
               additionalInfoDiv.innerHTML = ""; // Clear previous content
               // Add input for number of cops and type of cops
               additionalInfoDiv.innerHTML =
@@ -108,7 +108,7 @@
                 '<label for="typeOfCops">Type of Cops:</label>' +
                 '<input type="text" id="typeOfCops" name="typeOfCops">';
               additionalInfoDiv.style.display = "block";
-              Posttype = "Sightings"; // Show the additional info div
+              Posttype = "Sighting"; // Show the additional info div
             } else {
               additionalInfoDiv.innerHTML = ""; // Clear previous content
               additionalInfoDiv.style.display = "none"; // Hide the additional info div
@@ -129,20 +129,24 @@
           const description = document.getElementById("postdesc").value;
           const numberOfCops = document.getElementById("numberOfCops").value;
           const typeOfCops = document.getElementById("typeOfCops").value;
+          const lngLat = usermarker.getLngLat();
 
           if (numberOfCops === "") {
             errordiv.innerHTML = "Please enter a number of cops";
             return;
-          } else if (Posttype === "Sightings" && typeOfCops === "") {
+          } else if (Posttype === "Sighting" && typeOfCops === "") {
             errordiv.innerHTML = "Please enter a type of cop";
             return;
           } else {
             const data = {
+                post_type: Posttype,
               locationName: locationName,
               address: address,
               description: description,
               numberOfCops: numberOfCops,
               typeOfCops: typeOfCops,
+              postlat=lngLat.lat,
+              postlong=lngLat.lng
             };
 
             $.ajax({
@@ -217,11 +221,11 @@
               type="radio"
               class="btn-check"
               name="options"
-              id="Sightings"
+              id="Sighting"
               autocomplete="off"
-              value="Sightings"
+              value="Sighting"
             />
-            <label class="btn btn-secondary" for="Sightings"
+            <label class="btn btn-secondary" for="Sighting"
               >Cop Sightings</label
             >
           </div>
@@ -247,7 +251,6 @@
               Home
             </button>
           </div>
-          
         </div>
         <div class="col-8">
           <div id="map"></div>
