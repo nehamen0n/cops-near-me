@@ -188,11 +188,11 @@
                   }
 
                   const postMarker = new mapboxgl.Marker({
-                    color: markerColor,
                     draggable: false,
                   })
                     .setLngLat([location.postlong, location.postlat])
                     .addTo(map)
+                  postMarker.getElement().style.color = markerColor;
                   postMarker.getElement().classList.add("post-marker");
 
                   // Create a popup for the marker
