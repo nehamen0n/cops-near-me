@@ -246,7 +246,7 @@ def savelocation():
 				type_of_cop = result[8]
 				subway_station_name = None
 				color_visibility = None
-			if post_type_value == 'Subway':
+			elif post_type_value == 'Subway':
 				cop_number = None
 				type_of_cop = None
 				subway_station_name = result[7]
