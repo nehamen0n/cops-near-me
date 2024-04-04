@@ -188,7 +188,7 @@
                   postMarker.classList.add("post-marker");
 
                   // Create a popup for the marker
-                  var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
