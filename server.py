@@ -252,7 +252,26 @@ def haversine(lat1, long1, lat2, long2):
     # Calculate distance
     distance = R * c
     return distance
-	
+
+@app.route('/modcheck')
+def modcheck():
+	global usernum
+	#perm = uery user num in mod table to see if user has mod permissions (y/n).
+	perm='y'
+	if perm == 'y':
+		return render_template('moderator.html')
+	else:
+		return render_template('reject.html')
+
+@app.route('/modgen',methods=['GET','POST'])
+def modgen():
+	# run uery to get all posts, and make dictionary of all posts
+	data={} # delete, send back all posts back to front end
+	return jsonify(data=data)
+
+@app.route('/add_location')
+def add_location():
+	return render_template('useradd.html', usernum=usernum)
 
 
 
@@ -264,25 +283,6 @@ def haversine(lat1, long1, lat2, long2):
 # Notice that the function name is another() rather than index()
 # The functions for each app.route need to have different names
 #
-@app.route('/another')
-def another():
-	return render_template("another.html")
-
-
-# Example of adding new data to the database
-@app.route('/add', methods=['POST'])
-def add():
-	# accessing form inputs from user
-	name = request.form['name']
-	
-	# passing params in for each variable into query
-	params = {}
-	params["new_name"] = name
-	g.conn.execute(text('INSERT INTO test(name) VALUES (:new_name)'), params)
-	g.conn.commit()
-	return redirect('/')
-
-
 
 if __name__ == "__main__":
 	import click
