@@ -170,10 +170,19 @@
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
+<<<<<<< HEAD
 		  postmarker.setPopup(popup);
                   // postMarker.addEventListener("click", () => {
                     //popup.addTo(map);
                   // });
+=======
+                  postmarker.setPopup(popup)
+                  /*
+                  postMarker.addEventListener("click", () => {
+                    popup.addTo(map);
+                  });
+                  */
+>>>>>>> 5cfda87a990bd34f0e417ee043bf2fd349203724
                 }
               }
             },
@@ -243,14 +252,21 @@
             </div>
             <div class="row">
               <input
-                type="button"
-                data-toggle="button"
+                type="radio"
                 class="btn-check"
-                name="options"
+                name="o"
                 id="Precinct"
                 autocomplete="off"
               />
               <label class="btn btn-secondary" for="Precinct">Show precincts</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="o"
+                id="noPrecinct"
+                autocomplete="off"
+              />
+              <label class="btn btn-secondary" for="noPrecinct">Don't show precincts</label>
             </div>
             <div class="row">
               <button
