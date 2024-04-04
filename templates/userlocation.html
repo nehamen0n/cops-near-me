@@ -193,32 +193,17 @@
                     draggable: false,
                   })
                     .setLngLat([location.postlong, location.postlat])
-                    .addTo(map)
+                    .addTo(map);
                   postMarker.getElement().classList.add("post-marker");
-                  
-                  if (location.post_type === "SIGHTING") {
-                    const popup = new mapbox.gl.Popup({ offset: 25}).setHTML (
-                      `<h3>${location.location_name}</h3>` +
-                      `<p>Description: ${location.description}</p>` +
-                      `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>` +
-                      `<p>Number of Cops: ${location.cop_number}</p>` + 
-                      `<p> Type of Cops: ${location.type_of_cop}</p>`
-                    );
-                  } else {
-                    const popup = new mapbox.gl.Popup({ offset: 25}).setHTML (
-                      `<h3>${location.location_name}</h3>` +
-                      `<p>Description: ${location.description}</p>` +
-                      `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>` 
-                    );
-                  }
+                
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>`
+                      `<p>Date Resolved: ${location.date_resolved}</p>` +
+                      (location.cop_number !== undefined ? `<p> Number of Cops: ${location.cop_number}</p>` : ' ') +
+                      (location.type_of_cop !== undefined ? `<p>Type of Cops: ${location.type_of_cops}</p>` : ' ')
                   );
 		              postMarker.setPopup(popup);
                 }
