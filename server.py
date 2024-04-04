@@ -220,11 +220,11 @@ def savelocation():
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
-        'Post': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, NULL AS cop_number, SS.color_visibility FROM Post P JOIN Subway_Station SS ON P.location_name = SS.subway_station_name WHERE P.visible = 'Y'",
+        'Post': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'",
 		# 'SIGHTING'
         'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
-        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.subway_station_name, SS.color_visibility FROM Post P JOIN Subway_Station SS ON P.location_name = SS.subway_station_name WHERE P.visible = 'Y'"
+        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
     }
 
 	# retrieve specific sql query
@@ -244,28 +244,18 @@ def savelocation():
 			if post_type_value == 'Sighting':
 				cop_number = result[7]
 				type_of_cop = result[8]
-				subway_station_name = None
-				color_visibility = None
 			elif post_type_value == 'Subway':
-				cop_number = None
+				cop_number = result[7]
 				type_of_cop = None
-				subway_station_name = result[9]
-				color_visibility = result[10]
 			else:
 				cop_number = None
 				type_of_cop = None
-				subway_station_name = None
-				color_visibility = None
 		elif post_type == 'Sighting':
 			cop_number = result[7]
 			type_of_cop = result[8]
-			subway_station_name = None
-			color_visibility = None
 		else:
 			cop_number = None
 			type_of_cop = None
-			subway_station_name = result[7]
-			color_visibility = result[8]
 
 		# calculate distance to see what needs to be visible
 		distance = haversine(userlat, userlong, latitude, longitude)
@@ -281,8 +271,6 @@ def savelocation():
 				'post_type': post_type_value,
 				'cop_number': cop_number,
 				'type_of_cop': type_of_cop,
-				'subway_station_name': subway_station_name,
-				'color_visibility': color_visibility 
 
 			}
 			locations.update({currlocationid:temp})
