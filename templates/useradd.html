@@ -130,8 +130,6 @@
           const numberOfCops = document.getElementById("numberOfCops").value;
           const typeOfCops = document.getElementById("typeOfCops").value;
           lngLat = usermarker.getLngLat();
-          var postlat=lngLat.lat;
-          var postlong= lngLat.lng;
 
 
           if (numberOfCops === "") {
@@ -148,8 +146,8 @@
               description: description,
               numberOfCops: numberOfCops,
               typeOfCops: typeOfCops,
-              postlat=postlat,
-             postlong=postlong
+              postlat=lngLat.lat,
+             postlong=lngLat.lng
             };
 
             $.ajax({
