@@ -87,17 +87,17 @@
               console.log("sucess");
               clearMarkers();
 
-              for (const post_id in result.data) {
-                if (Object.hasOwnProperty.call(result.data, post_id)) {
-                  const postid = result.data[post_id];
+              for (const locationId in result.data) {
+                if (Object.hasOwnProperty.call(result.data, locationId)) {
+                  const post = result.data[locationId];
 
                   // Check if location data is valid
                   // Different color markers based on query
-                  console.log(data.post_id);
+                  console.log(post.post_id);
                   let markerColor = "#FF0000";
-                  if (data.post_type === "SUBWAY") {
+                  if (post.post_type === "SUBWAY") {
                     markerColor = "#00FF00"; // green for no cops
-                  } else if (data.post_type === "SIGHTING") {
+                  } else if (post.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
                   }
 
@@ -105,21 +105,21 @@
                     color: markerColor,
                     draggable: false,
                   })
-                    .setLngLat([data.postlong, data.postlat])
+                    .setLngLat([post.postlong, post.postlat])
                     .addTo(map);
                   postMarker.getElement().classList.add("post-marker");
 
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                    `<h3>${data.location_name}</h3>` +
-                      `<p>Description: ${data.description}</p>` +
-                      `<p>Date Reported: ${data.date_reported}</p>` +
-                      `<p>Date Resolved: ${data.date_resolved}</p>` +
-                      (data.cop_number !== undefined
-                        ? `<p> Number of Cops: ${location.cop_number}</p>`
+                    `<h3>${post.location_name}</h3>` +
+                      `<p>Description: ${post.description}</p>` +
+                      `<p>Date Reported: ${post.date_reported}</p>` +
+                      `<p>Date Resolved: ${post.date_resolved}</p>` +
+                      (post.cop_number !== undefined
+                        ? `<p> Number of Cops: ${post.cop_number}</p>`
                         : " ") +
-                      (data.type_of_cop !== undefined
-                        ? `<p>Type of Cops: ${location.type_of_cop}</p>`
+                      (post.type_of_cop !== undefined
+                        ? `<p>Type of Cops: ${post.type_of_cop}</p>`
                         : " ")
                   );
                   postMarker.setPopup(popup);
