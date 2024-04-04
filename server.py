@@ -332,10 +332,11 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
-		if object[0] in subwayid:
-			postType='SUBWAY'
-		else:
-			postType ='SIGHTING'
+		for thing in subwayid:
+			if object[0] == thing[0]:
+				postType='SUBWAY'
+			else:
+				postType ='SIGHTING'
 
 		temp={
 			'post_id':object[0],
