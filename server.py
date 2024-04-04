@@ -422,7 +422,7 @@ def user_cred(user_id=None):
 
 @app.route('/mark_resolved/<post_id>', methods=['GET','POST'])
 def mark_resolved(post_id=None):
-	time_resolved_query = "UPDATE Post SET date_resolved = now() WHERE post_id = :post_id"
+	time_resolved_query = "INSERT INTO Post (date_resolved) VALUES (now()) WHERE post_id = :post_id"
 	g.conn.execute(text(time_resolved_query), {'post_id': post_id})
 	g.conn.commit()
 	return redirect('/userlocation')
