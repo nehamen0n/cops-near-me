@@ -244,28 +244,18 @@ def savelocation():
 			if post_type_value == 'Sighting':
 				cop_number = result[7]
 				type_of_cop = result[8]
-				subway_station_name = None
-				color_visibility = None
 			elif post_type_value == 'Subway':
-				cop_number = None
+				cop_number = result[7]
 				type_of_cop = None
-				subway_station_name = result[9]
-				color_visibility = result[10]
 			else:
 				cop_number = None
 				type_of_cop = None
-				subway_station_name = None
-				color_visibility = None
 		elif post_type == 'Sighting':
 			cop_number = result[7]
 			type_of_cop = result[8]
-			subway_station_name = None
-			color_visibility = None
 		else:
 			cop_number = None
 			type_of_cop = None
-			subway_station_name = result[7]
-			color_visibility = result[8]
 
 		# calculate distance to see what needs to be visible
 		distance = haversine(userlat, userlong, latitude, longitude)
@@ -281,8 +271,6 @@ def savelocation():
 				'post_type': post_type_value,
 				'cop_number': cop_number,
 				'type_of_cop': type_of_cop,
-				'subway_station_name': subway_station_name,
-				'color_visibility': color_visibility 
 
 			}
 			locations.update({currlocationid:temp})
