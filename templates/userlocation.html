@@ -168,7 +168,7 @@
                   color: "#00FF00", // Green color for subway markers
                   draggable: false,
                 })
-                  .setLngLat([substation.postlong, substation.postlat])
+                  .setLngLat([substation.subwaylong, substation.subwaylat])
                   .addTo(map);
 
                 subwayMarker.getElement().classList.add("post-marker");
