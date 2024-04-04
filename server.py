@@ -222,9 +222,9 @@ def savelocation():
 		# combo of both 'SIGHTING' and 'SUBWAY'
         'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, P.post_id, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
 		# 'SIGHTING'
-        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, P.post_id, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y', P.post_id,",
+        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, P.post_id, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
-        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, P.post_id, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y', P.post_id,"
+        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, P.post_id, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
     }
 
 	# retrieve specific sql query
