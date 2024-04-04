@@ -398,12 +398,12 @@ def modgen():
 
 @app.route('/toggle_vis/<post_id>', methods =['GET','POST'])
 def toggle_vis(post_id=None):
-	check_query = "SELECT visibile WHERE post_id = :post_id"
+	check_query = "SELECT visible WHERE post_id = :post_id"
 	temp=g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
 	if temp[0]=='Y':
-		update_query = "UPDATE Post SET visibile = 'N' WHERE post_id = :post_id"
+		update_query = "UPDATE Post SET visible = 'N' WHERE post_id = :post_id"
 	else:
-		update_query = "UPDATE Post SET visibile = 'Y'  WHERE post_id = :post_id"
+		update_query = "UPDATE Post SET visible = 'Y'  WHERE post_id = :post_id"
 	g.conn.execute(text(update_query), {'post_id': post_id})
 	g.conn.commit()
 	return print(post_id)
