@@ -275,6 +275,7 @@ def savelocation():
 			}
 			locations.update({currlocationid:temp})
 			currlocationid+=1	
+
 	add_subway_stations(userlat, userlong, radius, locations, currlocationid)	
 	cursor.close()
 	return jsonify(locations = locations)
@@ -283,6 +284,7 @@ def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 	# query subway stations from database
 	subway_query = "SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type FROM Post P LEFT JOIN Subway_Station S ON P.location_name = S.subway_station_name WHERE P.post_id IS NULL"
 	cursor = g.conn.execute(text(subway_query))
+	print("HELLO")
 
 	for result in cursor:
 		latitude, longitude = result[0], result[1]
