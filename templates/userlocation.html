@@ -201,13 +201,14 @@
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>` +
+                      (location.time_resolved !== undefined ?`<p>Date Resolved: ${location.date_resolved}</p>`: `<p> <a href="/mark_resolved/${post.post_id}">Mark Resolved</a></p>`)
+                       +
                       (location.cop_number !== undefined
                         ? `<p> Number of Cops: ${location.cop_number}</p>`
                         : " ") +
                       (location.type_of_cop !== undefined
                         ? `<p>Type of Cops: ${location.type_of_cop}</p>`
-                        : " ")
+                        : " ") 
                   );
                   postMarker.setPopup(popup);
                 }

@@ -420,6 +420,14 @@ def user_cred(user_id=None):
 	g.conn.commit()
 	return redirect('/modcheck')
 
+@app.route('mark_resolved/<post_id>', methods=['GET','POST'])
+def mark_resolved(post_id=None):
+	time_resolved_query = "UPDATE Post SET time_resolved = now() WHERE post_id = :post_id"
+	g.conn.execute(text(time_resolved_query), {'post_id': post_id})
+	g.conn.commit()
+	return redirect('/save_location')
+
+
 @app.route('/add_location')
 def add_location():
 	return render_template('useradd.html', usernum=usernum)
