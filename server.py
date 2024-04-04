@@ -332,7 +332,7 @@ def modgen():
 		if object[0] in subwayid:
 			postType='SUBWAY'
 			subwayrun = "SELECT cop_number FROM Subway_Post WHERE post_id = :post_id"
-			x= g.conn.execute(text(subwayrun), {'post_id': object[0]})
+			x= g.conn.execute(text(subwayrun), {'post_id': object[0]}).fetchone()
 			cop_number=x[0]
 			type_of_cop=None
 		else:
