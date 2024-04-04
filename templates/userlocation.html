@@ -89,21 +89,6 @@
           .setLngLat([-73.974113, 40.781303])
           .addTo(map);
 
-        const postmarker = new mapboxgl.Marker({
-          color: "#FF0000",
-          draggable: false,
-        });
-          //.setLngLat([-73.98513, 40.758896])
-         // .addTo(map);
-
-        var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-          "<h3>Post Information</h3>" +
-            "<p> Extra Information blah blah blah<p>" +
-            "<p> blah blah blah <p>"
-        );
-
-        postmarker.setPopup(popup);
-
         function onDragEnd() {
           const lngLat = usermarker.getLngLat();
           console.log(`Longitude: ${lngLat.lng}, Latitude: ${lngLat.lat}`);
@@ -162,6 +147,13 @@
               for (const locationId in result.locations) {
                 if (Object.hasOwnProperty.call(result.locations, locationId)) {
                   const location = result.locations[locationId];
+
+                // Check if location data is valid
+                if (!location || !location.location_name || !location.postlong || !location.postlat) {
+                  console.error("Invalid location data:", location);
+                  continue;
+                }
+                
                   const postMarker = new mapboxgl.Marker({
                     color: "#FF0000",
                     draggable: false,
