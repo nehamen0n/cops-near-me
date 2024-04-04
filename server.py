@@ -336,10 +336,32 @@ def modgen():
 
 	select_query = "SELECT * FROM Post"
 	result = g.conn.execute(text(select_query))
+	subwaypostid_query = "SELECT post_id FROM Post"
+	subwayid = g.conn.execute(text(subwaypostid_query))
 	data={}
 	currid=0
 	for object in result:
-		print(object)
+		if object[0] in subwayid:
+			postType='Subway'
+		else:
+			postType ='Sighting'
+
+		temp={
+			'post_id':object[0],
+			'location_name':object[1],
+			'address':object[2],
+			'date_reported':object[3],
+			'date_resolved': object[4],
+			#users need a way to mark an incident as resolved
+			'visible': object[5],
+			'description': object[6],
+			'user_id': object[7],
+			'postlat': object[8],
+			'postlong':object[9],
+			'postType': postType
+		}
+		data.update({currid:temp})
+		currid+=1
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
