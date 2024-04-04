@@ -201,7 +201,7 @@
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
-                      (location.time_resolved !== None ?`<p>Date Resolved: ${location.date_resolved}</p>`: `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`)
+                      (location.time_resolved !== undefined ?`<p>Date Resolved: ${location.date_resolved}</p>`: `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`)
                        +
                       (location.cop_number !== undefined
                         ? `<p> Number of Cops: ${location.cop_number}</p>`
