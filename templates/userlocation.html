@@ -203,7 +203,9 @@
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
-                      (location.time_resolved !== undefined
+                      (location.time_resolved !== undefined &&
+                      location.time_resolved !== null &&
+                      location.time_resolved !== ""
                         ? `<p>Date Resolved: ${location.date_resolved}</p>`
                         : `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`) +
                       (location.cop_number !== undefined
