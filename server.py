@@ -287,12 +287,13 @@ def modcheck():
 	global usernum
 
 	perms_query="SELECT user_id FROM Moderator WHERE user_id = :usernum"
-	result = g.conn.execute(text(perms_query), {'usernum': usernum})
+	result = g.conn.execute(text(perms_query), {'usernum': usernum}).fetchone()
+	print(result)
 	if result:
 		perm='Y'
 	else:
 		perm='N'
-		
+
 	if perm == 'Y':
 		return render_template('moderator.html')
 	else:
