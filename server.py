@@ -351,9 +351,12 @@ def modgen():
 	result = g.conn.execute(text(select_query))
 	subwaypostid_query = "SELECT post_id FROM Subway_Post"
 	subwayid = [row[0] for row in g.conn.execute(text(subwaypostid_query))]
+	print(subwayid)
 	data={}
 	currid=0
 	for object in result:
+		print(object[0])
+
 		if object[0] in subwayid:
 			postType='SUBWAY'
 			subwayrun = "SELECT cop_number FROM Subway_Post WHERE post_id = :post_id"
