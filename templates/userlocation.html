@@ -77,6 +77,21 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
+        const precinctButton = document.getElementById("Precinct");
+        const noPrecinctButton = document.getElementById("noPrecinct");
+
+        precinctButton.addEventListener("click", () => {
+          // Toggle the 'active' class of the button
+          precinctButton.classList.toggle("btn-check:checked");
+          noPrecinctButton.classList.remove("btn-check:checked");
+        });
+
+        noPrecinctButton.addEventListener("click", () => {
+          // Toggle the 'active' class of the button
+          noPrecinctButton.classList.toggle("btn-check:checked");
+          precinctButton.classList.remove("btn-check:checked");
+        });
+
         const map = new mapboxgl.Map({
           container: "map",
           style: "mapbox://styles/mapbox/streets-v11",
@@ -121,7 +136,12 @@
               "Please select a post type.";
             return;
           }
-          // Clear any previous error messages
+
+          let showPrecincts = precinctButton.classList.contains("active")
+            ? true
+            : false;
+          console.log(showPrecincts);
+          // Clear any previous error messages;
           document.getElementById("error").textContent = "";
           lngLat = usermarker.getLngLat();
           // Send radius and post type to the server
@@ -139,8 +159,7 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success: function (result) {
-
-              console.log(result)
+              console.log(result);
               clearMarkers();
 
               // Create new markers for each location returned in the results
@@ -148,11 +167,16 @@
                 if (Object.hasOwnProperty.call(result.locations, locationId)) {
                   const location = result.locations[locationId];
 
-                // Check if location data is valid
-                if (!location || !location.location_name || !location.postlong || !location.postlat) {
-                  console.error("Invalid location data:", location);
-                  continue;
-                }
+                  // Check if location data is valid
+                  if (
+                    !location ||
+                    !location.location_name ||
+                    !location.postlong ||
+                    !location.postlat
+                  ) {
+                    console.error("Invalid location data:", location);
+                    continue;
+                  }
 
                   const postMarker = new mapboxgl.Marker({
                     color: "#FF0000",
@@ -170,7 +194,7 @@
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
-                  postmarker.setPopup(popup)
+                  postmarker.setPopup(popup);
                   /*
                   postMarker.addEventListener("click", () => {
                     popup.addTo(map);
@@ -251,7 +275,9 @@
                 id="Precinct"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="Precinct">Show precincts</label>
+              <label class="btn btn-secondary" for="Precinct"
+                >Show precincts</label
+              >
               <input
                 type="radio"
                 class="btn-check"
@@ -259,7 +285,9 @@
                 id="noPrecinct"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="noPrecinct">Don't show precincts</label>
+              <label class="btn btn-secondary" for="noPrecinct"
+                >Don't show precincts</label
+              >
             </div>
             <div class="row">
               <button
