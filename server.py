@@ -236,6 +236,7 @@ def savelocation():
 	for result in cursor:
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
+		actual_post_type = result['post_type']
 
 		# calculate distance to see what needs to be visible
 		distance = haversine(userlat, userlong, latitude, longitude)
@@ -248,7 +249,7 @@ def savelocation():
 				'description':result[3],
 				'date_reported':result[4],
 				'date_resolved':result[5],
-				'post_type': post_type
+				'post_type': actual_post_type
 			}
 			locations.update({currlocationid:temp})
 			currlocationid+=1
