@@ -153,7 +153,7 @@
                   console.error("Invalid location data:", location);
                   continue;
                 }
-                
+
                   const postMarker = new mapboxgl.Marker({
                     color: "#FF0000",
                     draggable: false,
@@ -164,6 +164,7 @@
                   postMarker.classList.add("post-marker");
 
                   // Create a popup for the marker
+                  print("HELLO1")
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
@@ -171,6 +172,7 @@
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
                   postMarker.addEventListener("click", () => {
+                    print("HELLO")
                     popup.addTo(map);
                   });
                 }
