@@ -173,7 +173,7 @@ def unumber():
 	json_data = request.get_json()
 	unum= json_data['phonenumber']
 	print(unum)
-	add_query = "INSERT INTO User (user_id, latitude, longitude, credibility) VALUES (:unum, NULL, NULL, 'y')"
+	add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:unum, NULL, NULL, 'y')"
 	g.conn.execute(text(add_query), {'unum': unum})
 	usernum= json_data
 	return jsonify(usernum=usernum)
