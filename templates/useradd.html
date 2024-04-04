@@ -129,9 +129,9 @@
           const description = document.getElementById("postdesc").value;
           const numberOfCops = document.getElementById("numberOfCops").value;
           const typeOfCops = document.getElementById("typeOfCops").value;
-          var lngLat = usermarker.getLngLat();
-          var postlat=lngLat.lat;
-           var postlong=lngLat.lng;
+          var ll = usermarker.getLngLat();
+          var postlat=ll.lat;
+           var postlong= ll.lng;
 
           if (numberOfCops === "") {
             errordiv.innerHTML = "Please enter a number of cops";
