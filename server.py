@@ -310,7 +310,7 @@ def add_post():
 	typeOfCops=json_data['typeOfCops']
 	postlat=json_data['postlat']
 	postlong=json_data['postlong']
-	post_id= random_with_N_digits(8)
+	post_id= str(random_with_N_digits(8))
 	post_type=json_data['post_type']
 
 	check_query=  "SELECT post_id FROM Post WHERE post_id = :post_id"
