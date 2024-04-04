@@ -181,18 +181,18 @@
 
                   // Different color markers based on query
                   let markerColor = "#FF0000";
-                  if (location.postType === "Subway") {
+                  if (location.post_type === "Subway") {
                     markerColor = "#00FF00";
-                  } else if (location.postType === "Sighting") {
+                  } else if (location.post_type === "Sighting") {
                     markerColor = "#0000FF";
                   }
 
                   const postMarker = new mapboxgl.Marker({
+                    color = markerColor,
                     draggable: false,
                   })
                     .setLngLat([location.postlong, location.postlat])
                     .addTo(map)
-                  postMarker.getElement().style.color = markerColor;
                   postMarker.getElement().classList.add("post-marker");
 
                   // Create a popup for the marker
