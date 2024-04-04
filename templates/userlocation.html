@@ -163,6 +163,7 @@
               console.log(result);
               clearMarkers();
               for (const subid in result.substation) {
+                const substation = result.substation[subid]
                 const subwayMarker = new mapboxgl.Marker({
                   color: "#00FF00", // Green color for subway markers
                   draggable: false,
