@@ -275,9 +275,36 @@ def savelocation():
 			}
 			locations.update({currlocationid:temp})
 			currlocationid+=1	
-		
+
+	add_subway_stations(userlat, userlong, radius, locations, currlocationid)	
 	cursor.close()
 	return jsonify(locations = locations)
+
+def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
+	# query subway stations from database
+	subway_query = "SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type FROM Post P LEFT JOIN Subway_Station S ON S.subway_station_name = P.location_name WHERE S.subway_station_name IS NOT NULL"
+	cursor = g.conn.execute(text(subway_query))
+
+	for result in cursor:
+		print(result)
+		latitude, longitude = result[0], result[1]
+		location_name = result[2]
+
+		distance = haversine(userlat, userlong, latitude, longitude)
+		if distance <= radius:
+			locations[currlocationid] = {
+				'id': currlocationid,
+				'subwaylat': latitude,
+				'subwaylong': longitude,
+				'location_name': location_name,  
+				'color_visibility': result[3],
+				'post_type': result[4]
+			}
+			currlocationid += 1
+
+	cursor.close()
+
+		
 	
 def haversine(lat1, long1, lat2, long2):
     import math
