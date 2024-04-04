@@ -333,14 +333,12 @@ def modgen():
 			postType='SUBWAY'
 			subwayrun = "SELECT cop_number FROM Subway_Post WHERE post_id = :post_id"
 			x= g.conn.execute(text(subwayrun), {'post_id': object[0]}).fetchone()
-			print(x)
 			cop_number=x[0]
 			type_of_cop=None
 		else:
 			postType ='SIGHTING'
 			subwayrun = "SELECT cop_number,type_of_cop FROM Sighting WHERE post_id = :post_id"
 			thing= g.conn.execute(text(subwayrun), {'post_id': object[0]}).fetchone()
-			print(thing)
 			cop_number=thing[0]
 			type_of_cop=thing[1]
 
