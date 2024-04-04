@@ -169,14 +169,22 @@ def login():
 
 @app.route('/login', methods=['GET','POST'])
 def unumber():
-	global usernum
-	json_data = request.get_json()
-	unum= json_data['phonenumber']
-	print(unum)
-	add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:unum, NULL, NULL, 'y')"
-	g.conn.execute(text(add_query), {'unum': unum})
-	usernum= json_data
-	return jsonify(usernum=usernum)
+    global usernum
+    json_data = request.get_json()
+    unum = json_data['phonenumber']
+    print(unum)
+
+    # Check if the phone number exists in the database
+    select_query = "SELECT user_id FROM Users WHERE user_id = :unum"
+    result = g.conn.execute(text(select_query), {'unum': unum}).fetchone()
+
+    # If the phone number doesn't exist, insert a new row
+    if not result:
+        add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:unum, NULL, NULL, 'y')"
+        g.conn.execute(text(add_query), {'unum': unum})
+    usernum = unum
+    return jsonify(usernum=usernum)
+   
 
 @app.route('/userlocation')
 def userlocation():
