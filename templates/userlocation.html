@@ -169,15 +169,7 @@
                   const location = result.locations[locationId];
 
                   // Check if location data is valid
-                  if (
-                    !location ||
-                    !location.location_name ||
-                    !location.postlong ||
-                    !location.postlat
-                  ) {
-                    console.error("Invalid location data:", location);
-                    continue;
-                  }
+
 
                   // Different color markers based on query
                   console.log(location.post_type);
