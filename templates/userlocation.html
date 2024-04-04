@@ -150,7 +150,7 @@
             postType: postType,
             userlong: lngLat.lng,
             userlat: lngLat.lat,
-            showPrecincts: showPrecincts
+            showPrecincts: showPrecincts,
           };
 
           $.ajax({
@@ -180,10 +180,10 @@
                   }
 
                   // Different color markers based on query
-                  console.log(location.post_type)
-                  let markerColor = "#FF0000"; 
+                  console.log(location.post_type);
+                  let markerColor = "#FF0000";
                   if (location.post_type === "SUBWAY") {
-                      markerColor = "#00FF00"; // green for no cops
+                    markerColor = "#00FF00"; // green for no cops
                   } else if (location.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
                   }
@@ -195,17 +195,21 @@
                     .setLngLat([location.postlong, location.postlat])
                     .addTo(map);
                   postMarker.getElement().classList.add("post-marker");
-                
+
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       `<p>Date Resolved: ${location.date_resolved}</p>` +
-                      (location.cop_number !== undefined ? `<p> Number of Cops: ${location.cop_number}</p>` : ' ') +
-                      (location.type_of_cop !== undefined ? `<p>Type of Cops: ${location.type_of_cop}</p>` : ' ')
+                      (location.cop_number !== undefined
+                        ? `<p> Number of Cops: ${location.cop_number}</p>`
+                        : " ") +
+                      (location.type_of_cop !== undefined
+                        ? `<p>Type of Cops: ${location.type_of_cop}</p>`
+                        : " ")
                   );
-		              postMarker.setPopup(popup);
+                  postMarker.setPopup(popup);
                 }
               }
             },
@@ -281,9 +285,7 @@
                 id="Precinct"
                 autocomplete="off"
               />
-              <label class="" for="Precinct"
-                >Show precincts</label
-              >
+              <label class="" for="Precinct">Show precincts</label>
               <input
                 type="radio"
                 class=""
@@ -291,9 +293,7 @@
                 id="noPrecinct"
                 autocomplete="off"
               />
-              <label class="" for="noPrecinct"
-                >Don't show precincts</label
-              >
+              <label class="" for="noPrecinct">Don't show precincts</label>
             </div>
             <div class="row">
               <button

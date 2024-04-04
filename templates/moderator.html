@@ -70,25 +70,81 @@
           zoom: 10,
           maxBounds: bounds,
         });
+        function clearMarkers() {
+          // Remove all markers from the map
+          document.querySelectorAll(".post-marker").forEach((marker) => {
+            marker.remove();
+          });
+        }
 
-        const genPosts = document.getElementById('modgen');
+        const genPosts = document.getElementById("modgen");
 
-        genPosts.addEventListener("click", function(){
-            $.ajax({
-              type: "GET",
-              url: "modgen",
-              success: function (result) {
-                console.log("sucess"); 
-                //display data
-                console.log(result);
-              },
-              error: function (request, status, error) {
-                console.log("Error");
-                console.log(request);
-                console.log(status);
-                console.log(error);
-              },
-            });
+        genPosts.addEventListener("click", function () {
+          $.ajax({
+            type: "GET",
+            url: "modgen",
+            success: function (result) {
+              console.log("sucess");
+              clearMarkers();
+
+              for (const locationId in result.locations) {
+                if (Object.hasOwnProperty.call(result.locations, locationId)) {
+                  const location = result.locations[locationId];
+
+                  // Check if location data is valid
+                  if (
+                    !location ||
+                    !location.location_name ||
+                    !location.postlong ||
+                    !location.postlat
+                  ) {
+                    console.error("Invalid location data:", location);
+                    continue;
+                  }
+
+                  // Different color markers based on query
+                  console.log(location.post_type);
+                  let markerColor = "#FF0000";
+                  if (location.post_type === "SUBWAY") {
+                    markerColor = "#00FF00"; // green for no cops
+                  } else if (location.post_type === "SIGHTING") {
+                    markerColor = "#0000FF"; // blue
+                  }
+
+                  const postMarker = new mapboxgl.Marker({
+                    color: markerColor,
+                    draggable: false,
+                  })
+                    .setLngLat([location.postlong, location.postlat])
+                    .addTo(map);
+                  postMarker.getElement().classList.add("post-marker");
+
+                  // Create a popup for the marker
+                  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                    `<h3>${location.location_name}</h3>` +
+                      `<p>Description: ${location.description}</p>` +
+                      `<p>Date Reported: ${location.date_reported}</p>` +
+                      `<p>Date Resolved: ${location.date_resolved}</p>` +
+                      (location.cop_number !== undefined
+                        ? `<p> Number of Cops: ${location.cop_number}</p>`
+                        : " ") +
+                      (location.type_of_cop !== undefined
+                        ? `<p>Type of Cops: ${location.type_of_cop}</p>`
+                        : " ")
+                  );
+                  postMarker.setPopup(popup);
+                }
+              }
+              //display data
+              console.log(result);
+            },
+            error: function (request, status, error) {
+              console.log("Error");
+              console.log(request);
+              console.log(status);
+              console.log(error);
+            },
+          });
         });
       });
     </script>
@@ -98,11 +154,7 @@
       <div class="row h-100">
         <div class="col-4">
           <div class="row">
-            <button
-              type="button"
-              class="btn btn-outline-dark"
-              id="modgen"
-            >
+            <button type="button" class="btn btn-outline-dark" id="modgen">
               Generate Posts
             </button>
           </div>
@@ -111,7 +163,7 @@
               type="button"
               class="btn btn-outline-dark"
               id="home"
-               onclick="location.href='{{ url_for('userlocation') }}'"
+              onclick="location.href='{{ url_for('userlocation') }}'"
             >
               Home
             </button>

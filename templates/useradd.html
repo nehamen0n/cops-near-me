@@ -104,7 +104,8 @@
               // Add input for number of cops and type of cops
               additionalInfoDiv.innerHTML =
                 '<label for="numberOfCops">Number of Cops:</label>' +
-                '<input type="number" id="numberOfCops" name="numberOfCops">' + '<br/>'+
+                '<input type="number" id="numberOfCops" name="numberOfCops">' +
+                "<br/>" +
                 '<label for="typeOfCops">Type of Cops:</label>' +
                 '<input type="text" id="typeOfCops" name="typeOfCops">';
               additionalInfoDiv.style.display = "block";
@@ -131,7 +132,6 @@
           const typeOfCops = document.getElementById("typeOfCops").value;
           lngLat = usermarker.getLngLat();
 
-
           if (numberOfCops === "") {
             errordiv.innerHTML = "Please enter a number of cops";
             return;
@@ -140,14 +140,14 @@
             return;
           } else {
             const data = {
-                post_type: Posttype,
+              post_type: Posttype,
               locationName: locationName,
               address: address,
               description: description,
               numberOfCops: numberOfCops,
               typeOfCops: typeOfCops,
-              postlat:lngLat.lat,
-             postlong:lngLat.lng
+              postlat: lngLat.lat,
+              postlong: lngLat.lng,
             };
 
             $.ajax({
