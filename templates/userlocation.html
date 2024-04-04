@@ -69,6 +69,12 @@
         [-74.054487, 40.698474],
         [-73.864873, 40.875623], // Southwest coordinate// Northeast coordinates
       ];
+      function clearMarkers() {
+        // Remove all markers from the map
+        document.querySelectorAll(".post-marker").forEach((marker) => {
+          marker.remove();
+        });
+      }
 
       document.addEventListener("DOMContentLoaded", () => {
         const map = new mapboxgl.Map({
@@ -84,16 +90,17 @@
           .addTo(map);
 
         const postmarker = new mapboxgl.Marker({
-          color: '#FF0000',
-          draggable: false
+          color: "#FF0000",
+          draggable: false,
         })
-        .setLngLat([-73.985130, 40.758896])
-        .addTo(map)
+          .setLngLat([-73.98513, 40.758896])
+          .addTo(map);
 
-        var popup = new mapboxgl.Popup({offset: 25})
-        .setHTML("<h3>Post Information</h3>" + 
-                "<p> Extra Information blah blah blah<p>" + 
-                "<p> blah blah blah <p>");
+        var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+          "<h3>Post Information</h3>" +
+            "<p> Extra Information blah blah blah<p>" +
+            "<p> blah blah blah <p>"
+        );
 
         postmarker.setPopup(popup);
 
@@ -147,8 +154,33 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success: function (result) {
-              console.log("sucess");
-              console.log(result);
+              clearMarkers();
+
+              // Create new markers for each location returned in the results
+              for (const locationId in result.locations) {
+                if (Object.hasOwnProperty.call(result.locations, locationId)) {
+                  const location = result.locations[locationId];
+                  const postMarker = new mapboxgl.Marker({
+                    color: "#FF0000",
+                    draggable: false,
+                  })
+                    .setLngLat([location.postlong, location.postlat])
+                    .addTo(map)
+                    .getElement();
+                  postMarker.classList.add("post-marker");
+
+                  // Create a popup for the marker
+                  const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                    `<h3>${location.location_name}</h3>` +
+                      `<p>Description: ${location.description}</p>` +
+                      `<p>Date Reported: ${location.date_reported}</p>` +
+                      `<p>Date Resolved: ${location.date_resolved}</p>`
+                  );
+                  postMarker.addEventListener("click", () => {
+                    popup.addTo(map);
+                  });
+                }
+              }
             },
             error: function (request, status, error) {
               console.log("Error");

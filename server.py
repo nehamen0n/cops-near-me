@@ -232,7 +232,7 @@ def savelocation():
 				'id': currlocationid,
 				'postlat': latitude,
 				'postlong': longitude,
-				'locationname': location_name,
+				'location_name': location_name,
 				'description':result[3],
 				'date_reported':result[4],
 				'date_resolved':result[5],
