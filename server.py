@@ -239,24 +239,24 @@ def savelocation():
 		print(result)
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
-		post_type_value = result[7]
+		#post_type_value = result[7]
 		
-		if post_type == 'Post':
-			if post_type_value == 'Sighting':
-				cop_number = result[8]
-				type_of_cop = result[9]
-			elif post_type_value == 'Subway':
-				cop_number = result[8]
-				type_of_cop = None
-			else:
-				cop_number = None
-				type_of_cop = None
-		elif post_type == 'Sighting':
-			cop_number = result[8]
-			type_of_cop = result[9]
-		else:
-			cop_number = None
-			type_of_cop = None
+		#if post_type == 'Post':
+		#	if post_type_value == 'Sighting':
+		#		cop_number = result[8]
+		#		type_of_cop = result[9]
+		#	elif post_type_value == 'Subway':
+		#		cop_number = result[8]
+		#		type_of_cop = None
+		#	else:
+		#		cop_number = None
+		#		type_of_cop = None
+		#elif post_type == 'Sighting':
+		#	cop_number = result[8]
+		#	type_of_cop = result[9]
+		#else:
+		#	cop_number = None
+		#	type_of_cop = None
 
 		# calculate distance to see what needs to be visible
 		distance = haversine(userlat, userlong, latitude, longitude)
@@ -270,9 +270,9 @@ def savelocation():
 				'description':result[3],
 				'date_reported':result[4],
 				'date_resolved':result[5],
-				'post_type': post_type_value,
-				'cop_number': cop_number,
-				'type_of_cop': type_of_cop,
+				'post_type': result[7],
+				'cop_number': result[8],
+				'type_of_cop': result[9]
 
 			}
 			locations.update({currlocationid:temp})
@@ -372,9 +372,6 @@ def modgen():
 
 		cred_query = "SELECT credibility FROM Users WHERE user_id = :usernum"
 		user_cred= g.conn.execute(text(cred_query), {'usernum': object[7]}).fetchone()
-
-		print(cop_number)
-		print(type_of_cop)
 
 		temp={
 			'post_id':object[0],
