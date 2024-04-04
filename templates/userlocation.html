@@ -181,11 +181,12 @@
 
                   // Different color markers based on query
                   console.log(location.post_type);
-                  let markerColor = "#FF0000";
                   if (location.post_type === "SUBWAY") {
-                    markerColor = "#00FF00"; // green for no cops
+                    markerColor = "#00FF00"; // green for cops in the subway station
                   } else if (location.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
+                  } else if (location.post_type === 'SUBWAY_STATION') {
+                    markerColor = "#FF0000"; // red for just subway stations, no cops
                   }
 
                   const postMarker = new mapboxgl.Marker({
