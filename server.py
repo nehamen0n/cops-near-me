@@ -201,6 +201,9 @@ def savelocation():
 	userlat = json_data['userlat']
 	radius = json_data['radius']
 
+	update_query = "UPDATE Users SET latitude = :userlat, longitude = :userlong WHERE user_id = :unum"
+	g.conn.execute(text(update_query), {'userlat': userlat, 'userlong': userlong, 'unum': usernum})
+
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
