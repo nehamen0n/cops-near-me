@@ -224,7 +224,7 @@ def savelocation():
 		# 'SIGHTING'
         'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
-        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.subway_station_name, SS.color_visibility FROM Post P JOIN Subway_Station SS ON P.location_name = SS.subway_station_name WHERE P.visible = 'Y'"
+        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, SS.type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
     }
 
 	# retrieve specific sql query
