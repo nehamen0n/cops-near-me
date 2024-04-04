@@ -220,11 +220,11 @@ def savelocation():
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
-        'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y',P.post_id,",
+        'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, P.post_id, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
 		# 'SIGHTING'
-        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y', P.post_id,",
+        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, P.post_id, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y', P.post_id,",
 		# 'SUBWAY'
-        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y', P.post_id,"
+        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, P.post_id, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y', P.post_id,"
     }
 
 	# retrieve specific sql query
@@ -243,17 +243,17 @@ def savelocation():
 		
 		if post_type == 'Post':
 			if post_type_value == 'Sighting':
-				cop_number = result[7]
-				type_of_cop = result[8]
+				cop_number = result[8]
+				type_of_cop = result[9]
 			elif post_type_value == 'Subway':
-				cop_number = result[7]
+				cop_number = result[8]
 				type_of_cop = None
 			else:
 				cop_number = None
 				type_of_cop = None
 		elif post_type == 'Sighting':
-			cop_number = result[7]
-			type_of_cop = result[8]
+			cop_number = result[8]
+			type_of_cop = result[9]
 		else:
 			cop_number = None
 			type_of_cop = None
@@ -263,7 +263,7 @@ def savelocation():
 		if distance <= radius:
 			temp={
 				'id': currlocationid,
-				'post_id': result[9],
+				'post_id': result[7],
 				'postlat': latitude,
 				'postlong': longitude,
 				'location_name': location_name,
