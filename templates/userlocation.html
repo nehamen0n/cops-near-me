@@ -219,6 +219,8 @@
                     markerColor = "#00FF00"; // green for no cops
                   } else if (location.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
+                  } else if (location.post_type === 'SUBWAY_STATION') {
+                    markerColor = "#FFFF00"; // yellow for just subway stations, no cops
                   }
 
                   const postMarker = new mapboxgl.Marker({
