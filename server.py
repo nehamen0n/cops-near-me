@@ -251,6 +251,11 @@ def savelocation():
 				type_of_cop = None
 				subway_station_name = result[9]
 				color_visibility = result[10]
+			else:
+				cop_number = None
+				type_of_cop = None
+				subway_station_name = None
+				color_visibility = None
 		elif post_type == 'Sighting':
 			cop_number = result[7]
 			type_of_cop = result[8]
