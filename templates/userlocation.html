@@ -164,15 +164,14 @@
               clearMarkers();
 
               // Create new markers for each location returned in the results
-              console.log(result.locations)
               for (const locationId in result.locations) {
                 if (Object.hasOwnProperty.call(result.locations, locationId)) {
                   const location = result.locations[locationId];
-                  console.log(location)
 
                   // Check if location data is valid
                   if (
                     !location ||
+                    !location.location_name ||
                     !location.postlong ||
                     !location.postlat
                   ) {
@@ -182,13 +181,11 @@
 
                   // Different color markers based on query
                   console.log(location.post_type);
-                  let markerColor = "#FF0000"; // default
+                  let markerColor = "#FF0000";
                   if (location.post_type === "SUBWAY") {
-                    markerColor = "#00FF00"; // green for cops in the subway station
+                    markerColor = "#00FF00"; // green for no cops
                   } else if (location.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
-                  } else if (location.post_type === 'SUBWAY_STATION') {
-                    markerColor = "#FFFF00"; // red for just subway stations, no cops
                   }
 
                   const postMarker = new mapboxgl.Marker({
