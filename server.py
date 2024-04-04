@@ -286,12 +286,13 @@ def haversine(lat1, long1, lat2, long2):
 def modcheck():
 	global usernum
 
-	perms_query="SELECT user_id FROM Moderator WHERE perms = 'Y'"
+	perms_query="SELECT user_id FROM Moderator WHERE user_id = :usernum"
 	result = g.conn.execute(text(perms_query), {'usernum': usernum})
-	for x in result:
-		print(x)
-	#perm = uery user num in mod table to see if user has mod permissions (y/n).
-	perm='Y'
+	if result:
+		perm='Y'
+	else:
+		perm='N'
+		
 	if perm == 'Y':
 		return render_template('moderator.html')
 	else:
