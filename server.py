@@ -406,7 +406,7 @@ def toggle_vis(post_id=None):
 		update_query = "UPDATE Post SET visible = 'Y'  WHERE post_id = :post_id"
 	g.conn.execute(text(update_query), {'post_id': post_id})
 	g.conn.commit()
-	return print(post_id)
+	return render_template('moderator.html')
 
 @app.route('/user_cred/<user_id>',methods =['GET','POST'])
 def user_cred(user_id=None):
