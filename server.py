@@ -354,7 +354,7 @@ def modgen():
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
 
-@app.route ('delete_post/<post_id>', methods =['GET','POST'])
+@app.route ('/delete_post/<post_id>', methods =['GET','POST'])
 def delete_post(post_id=None):
 
 	return print(post_id)
