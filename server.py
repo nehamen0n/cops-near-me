@@ -334,6 +334,7 @@ def modgen():
 			print(thing[0])
 			if object[0] == thing[0]:
 				postType='SUBWAY'
+				break
 			else:
 				postType ='SIGHTING'
 
