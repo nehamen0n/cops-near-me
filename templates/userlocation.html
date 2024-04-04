@@ -188,7 +188,7 @@
                   .setLngLat([precinct.prelong, precinct.prelat])
                   .addTo(map);
 
-                subwayMarker.getElement().classList.add("post-marker");
+                precinctMarker.getElement().classList.add("post-marker");
 
                 const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                   `<h3>${precinct.pre_name}</h3>` 
