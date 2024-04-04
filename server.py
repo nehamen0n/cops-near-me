@@ -175,7 +175,7 @@ def unumber():
 	usernum = json_data['phonenumber']
 
     # Check if the phone number exists in the database
-	select_query = "SELECT user_id FROM Users WHERE user_id = :unum"
+	select_query = "SELECT user_id FROM Users WHERE user_id = :usernum"
 	result = g.conn.execute(text(select_query), {'usernum': usernum}).fetchone()
 
     # If the phone number doesn't exist, insert a new row
