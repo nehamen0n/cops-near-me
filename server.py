@@ -326,9 +326,6 @@ def modgen():
 	result = g.conn.execute(text(select_query))
 	subwaypostid_query = "SELECT post_id FROM Subway_Post"
 	subwayid = g.conn.execute(text(subwaypostid_query))
-	print(subwayid)
-	for x in subwayid:
-		print(x)
 	data={}
 	currid=0
 	for object in result:
