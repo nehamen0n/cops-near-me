@@ -187,7 +187,7 @@ def unumber():
 
     # If the phone number doesn't exist, insert a new row
 	if not result:
-		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'y')"
+		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'Y')"
 		g.conn.execute(text(add_query), {'usernum': usernum})
 		g.conn.commit()
 	return jsonify(json_data=json_data)
@@ -312,9 +312,16 @@ def haversine(lat1, long1, lat2, long2):
 @app.route('/modcheck')
 def modcheck():
 	global usernum
-	#perm = uery user num in mod table to see if user has mod permissions (y/n).
-	perm='y'
-	if perm == 'y':
+
+	perms_query="SELECT user_id FROM Moderator WHERE user_id = :usernum"
+	result = g.conn.execute(text(perms_query), {'usernum': usernum}).fetchone()
+	print(result)
+	if result:
+		perm='Y'
+	else:
+		perm='N'
+
+	if perm == 'Y':
 		return render_template('moderator.html')
 	else:
 		return render_template('reject.html')
@@ -350,7 +357,7 @@ def add_post():
 		post_id= random_with_N_digits(8)
 		result = g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
 
-	add_query = "INSERT INTO Post (post_id, latitude, longitude, location_name, address, date_reported, date_resolved, visible, description, user_id) VALUES (:post_id, :postlat, :postlong, :location_name, :address, now(), NULL, 'y', :description, :user_id)"
+	add_query = "INSERT INTO Post (post_id, latitude, longitude, location_name, address, date_reported, date_resolved, visible, description, user_id) VALUES (:post_id, :postlat, :postlong, :location_name, :address, now(), NULL, 'Y', :description, :user_id)"
 	g.conn.execute(text(add_query), {'post_id': post_id, 'postlat': postlat, 'postlong':postlong,'location_name':location_name,'address':address,'description':description, 'user_id': usernum})
 	g.conn.commit()
 
