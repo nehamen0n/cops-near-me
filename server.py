@@ -221,7 +221,6 @@ def savelocation():
 	locations = {}
 	currlocationid=0
 	for result in cursor:
-		print(result)
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
 
@@ -285,6 +284,12 @@ def modgen():
 @app.route('/add_location')
 def add_location():
 	return render_template('useradd.html', usernum=usernum)
+
+@app.route('/add_post',methods=['GET','POST'])
+def add_post():
+	global usernum
+	json_data = request.get_json()
+	return jsonify(json_data=json_data)
 
 
 
