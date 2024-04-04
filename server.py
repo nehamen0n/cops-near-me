@@ -236,6 +236,7 @@ def savelocation():
 	locations = {}
 	currlocationid=0
 	for result in cursor:
+		print(result)
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
 		post_type_value = result[6]
@@ -262,6 +263,7 @@ def savelocation():
 		if distance <= radius:
 			temp={
 				'id': currlocationid,
+				'post_id':
 				'postlat': latitude,
 				'postlong': longitude,
 				'location_name': location_name,
@@ -423,8 +425,8 @@ def user_cred(user_id=None):
 @app.route('/mark_resolved/<post_id>', methods=['GET','POST'])
 def mark_resolved(post_id=None):
 	print(post_id)
-	time_resolved_query = "UPDATE Post SET date_resolved = :now WHERE post_id = :post_id"
-	g.conn.execute(text(time_resolved_query), {'post_id': post_id, 'now':datetime.now()})
+	time_resolved_query = "UPDATE Post SET date_resolved = now() WHERE post_id = :post_id"
+	g.conn.execute(text(time_resolved_query), {'post_id': post_id})
 	g.conn.commit()
 	return redirect('/userlocation')
 
