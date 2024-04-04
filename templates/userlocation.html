@@ -181,11 +181,11 @@
 
                   // Different color markers based on query
                   console.log(location.post_type)
-                  let markerColor = "#FF0000";
+                  let markerColor = "#FF0000"; 
                   if (location.post_type === "SUBWAY") {
-                    markerColor = "#00FF00";
+                      markerColor = "#00FF00"; // green for no cops
                   } else if (location.post_type === "SIGHTING") {
-                    markerColor = "#0000FF";
+                    markerColor = "#0000FF"; // blue
                   }
 
                   const postMarker = new mapboxgl.Marker({
@@ -195,7 +195,24 @@
                     .setLngLat([location.postlong, location.postlat])
                     .addTo(map)
                   postMarker.getElement().classList.add("post-marker");
-
+                  
+                  if (location.post_type === "SIGHTING") {
+                    const popup = new maxbox.gl.Popup({ offset: 25}).setHTML (
+                      `<h3>${location.location_name}</h3>` +
+                      `<p>Description: ${location.description}</p>` +
+                      `<p>Date Reported: ${location.date_reported}</p>` +
+                      `<p>Date Resolved: ${location.date_resolved}</p>` +
+                      `<p>Number of Cops: ${location.cop_number}</p>` + 
+                      `<p> Type of Cops: ${location.type_of_cop}</p>`
+                    );
+                  } else {
+                    const popup = new maxbox.gl.Popup({ offset: 25}).setHTML (
+                      `<h3>${location.location_name}</h3>` +
+                      `<p>Description: ${location.description}</p>` +
+                      `<p>Date Reported: ${location.date_reported}</p>` +
+                      `<p>Date Resolved: ${location.date_resolved}</p>` 
+                    );
+                  }
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
