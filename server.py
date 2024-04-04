@@ -171,7 +171,7 @@ def login():
 def unumber():
     global usernum
     json_data = request.get_json()
-    unum = json_data['phonenumber']
+    unum = json_data
     print(unum)
 
     # Check if the phone number exists in the database
@@ -182,8 +182,8 @@ def unumber():
     if not result:
         add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:unum, NULL, NULL, 'y')"
         g.conn.execute(text(add_query), {'unum': unum})
-    usernum = json_data
-    return jsonify(usernum=usernum)
+    usernum = json_data['phonenumber']
+    return jsonify(unum=unum)
    
 
 @app.route('/userlocation')
