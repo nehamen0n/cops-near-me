@@ -154,6 +154,8 @@
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success: function (result) {
+
+              console.log(results)
               clearMarkers();
 
               // Create new markers for each location returned in the results
