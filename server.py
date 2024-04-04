@@ -330,9 +330,9 @@ def modgen():
 	currid=0
 	for object in result:
 		if object[0] in subwayid:
-			postType='Subway'
+			postType='SUBWAY'
 		else:
-			postType ='Sighting'
+			postType ='SIGHTING'
 
 		temp={
 			'post_id':object[0],
@@ -353,6 +353,11 @@ def modgen():
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
+
+@app.route ('delete_post/<post_id>', methods =['GET','POST'])
+def delete_post(post_id=None):
+
+	return print(post_id)
 
 @app.route('/add_location')
 def add_location():
