@@ -194,8 +194,8 @@
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
-		              postmarker.setPopup(popup);
-                  postmarker.addEventListener("click", () => {
+		              postMarker.setPopup(popup);
+                  postMarker.addEventListener("click", () => {
                     popup.addTo(map);
                   });
                 }
@@ -268,22 +268,22 @@
             <div class="row">
               <input
                 type="radio"
-                class="btn-check"
+                class=""
                 name="o"
                 id="Precinct"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="Precinct"
+              <label class="" for="Precinct"
                 >Show precincts</label
               >
               <input
                 type="radio"
-                class="btn-check"
+                class=""
                 name="o"
                 id="noPrecinct"
                 autocomplete="off"
               />
-              <label class="btn btn-secondary" for="noPrecinct"
+              <label class="" for="noPrecinct"
                 >Don't show precincts</label
               >
             </div>
