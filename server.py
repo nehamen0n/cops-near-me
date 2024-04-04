@@ -282,7 +282,7 @@ def savelocation():
 
 def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 	# query subway stations from database
-	subway_query = "SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type FROM Post P LEFT JOIN Subway_Station S ON S.subway_station_name = P.location_name"
+	subway_query = "SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type FROM Post P LEFT JOIN Subway_Station S ON S.subway_station_name = P.location_name WHERE S.subway_station_name IS NOT NULL"
 	cursor = g.conn.execute(text(subway_query))
 
 	for result in cursor:
