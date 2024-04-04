@@ -197,7 +197,7 @@
                   postMarker.getElement().classList.add("post-marker");
                   
                   if (location.post_type === "SIGHTING") {
-                    const popup = new maxbox.gl.Popup({ offset: 25}).setHTML (
+                    const popup = new mapbox.gl.Popup({ offset: 25}).setHTML (
                       `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
