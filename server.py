@@ -360,7 +360,9 @@ def modgen():
 
 @app.route ('/delete_post/<post_id>', methods =['GET','POST'])
 def delete_post(post_id=None):
-	return print(post_id)
+	delete_query = "DELETE FROM Post WHERE post_id = :post_id;"
+	g.conn.execute(text(delete_query), {'post_id': post_id})
+	return render_template('moderator.html')
 
 @app.route('/toggle_vis/<post_id>', methods =['GET','POST'])
 def toggle_vis(post_id=None):
