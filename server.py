@@ -288,7 +288,8 @@ def modcheck():
 
 	perms_query="SELECT user_id FROM Moderator WHERE perms = 'Y'"
 	result = g.conn.execute(text(perms_query), {'usernum': usernum})
-	print(result)
+	for x in result:
+		print(x)
 	#perm = uery user num in mod table to see if user has mod permissions (y/n).
 	perm='Y'
 	if perm == 'Y':
