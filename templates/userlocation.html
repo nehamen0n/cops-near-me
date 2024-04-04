@@ -162,6 +162,22 @@
             success: function (result) {
               console.log(result);
               clearMarkers();
+              for (const subid in result.substation) {
+                const substation = result.substation[subid]
+                const subwayMarker = new mapboxgl.Marker({
+                  color: "#FF0000", // Green color for subway markers
+                  draggable: false,
+                })
+                  .setLngLat([substation.subwaylong, substation.subwaylat])
+                  .addTo(map);
+
+                subwayMarker.getElement().classList.add("post-marker");
+
+                const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+                  `<h3>${substation.location_name}</h3>` 
+                );
+                subwayMarker.setPopup(popup);
+              }
 
               // Create new markers for each location returned in the results
               for (const locationId in result.locations) {
@@ -181,13 +197,16 @@
 
                   // Different color markers based on query
                   console.log(location.post_type);
-                  let markerColor = "#FF0000"; // default
+                  let markerColor = "#FF0000";
                   if (location.post_type === "SUBWAY") {
-                    markerColor = "#00FF00"; // green for cops in the subway station
+                    markerColor = "#00FF00"; // green for no cops
                   } else if (location.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
+<<<<<<< HEAD
                   } else if (location.post_type === 'SUBWAY_STATION') {
                     markerColor = "#FFFF00"; // yellow for just subway stations, no cops
+=======
+>>>>>>> 18b2eb4aaec4ddf98ea01de6c3e6d5dd9ae5bb2c
                   }
 
                   const postMarker = new mapboxgl.Marker({
@@ -198,18 +217,26 @@
                     .addTo(map);
                   postMarker.getElement().classList.add("post-marker");
 
+                  if (location.date_resolved !== null) {
+                    var time_res_insert = `<p>Date Resolved: ${location.date_resolved}</p>`;
+                  } else {
+                    var time_res_insert = `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`;
+                  }
+
+                  if (location.type_of_cop !== null) {
+                    var coptype = `<p>Type of Cops: ${location.type_of_cop}</p>`;
+                  } else {
+                    var coptype = ``;
+                  }
+
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>` +
-                      (location.cop_number !== undefined
-                        ? `<p> Number of Cops: ${location.cop_number}</p>`
-                        : " ") +
-                      (location.type_of_cop !== undefined
-                        ? `<p>Type of Cops: ${location.type_of_cop}</p>`
-                        : " ")
+                      time_res_insert +
+                      `<p> Number of Cops: ${location.cop_number}</p>` +
+                      coptype
                   );
                   postMarker.setPopup(popup);
                 }

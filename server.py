@@ -220,11 +220,11 @@ def savelocation():
 	# define dictionary of potential types of sql queries
 	post_queries = {
 		# combo of both 'SIGHTING' and 'SUBWAY'
-        'Post': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'",
+        'Post': "SELECT  P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y' UNION SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved,P.post_id, 'SUBWAY' AS post_type, SS.cop_number, NULL AS type_of_cop FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'",
 		# 'SIGHTING'
-        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
+        'Sighting': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SIGHTING' AS post_type, S.cop_number, S.type_of_cop FROM Post P JOIN Sighting S ON P.post_id = S.post_id WHERE P.visible = 'Y'",
 		# 'SUBWAY'
-        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, 'SUBWAY' AS post_type, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
+        'Subway': "SELECT P.latitude, P.longitude, P.location_name, P.description, P.date_reported, P.date_resolved, P.post_id, 'SUBWAY' AS post_type, SS.cop_number FROM Post P JOIN Subway_Post SS ON P.post_id = SS.post_id WHERE P.visible = 'Y'"
     }
 
 	# retrieve specific sql query
@@ -236,49 +236,51 @@ def savelocation():
 	locations = {}
 	currlocationid=0
 	for result in cursor:
+		print(result)
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
-		post_type_value = result[6]
+		#post_type_value = result[7]
 		
-		if post_type == 'Post':
-			if post_type_value == 'Sighting':
-				cop_number = result[7]
-				type_of_cop = result[8]
-			elif post_type_value == 'Subway':
-				cop_number = result[7]
-				type_of_cop = None
-			else:
-				cop_number = None
-				type_of_cop = None
-		elif post_type == 'Sighting':
-			cop_number = result[7]
-			type_of_cop = result[8]
-		else:
-			cop_number = None
-			type_of_cop = None
+		#if post_type == 'Post':
+		#	if post_type_value == 'Sighting':
+		#		cop_number = result[8]
+		#		type_of_cop = result[9]
+		#	elif post_type_value == 'Subway':
+		#		cop_number = result[8]
+		#		type_of_cop = None
+		#	else:
+		#		cop_number = None
+		#		type_of_cop = None
+		#elif post_type == 'Sighting':
+		#	cop_number = result[8]
+		#	type_of_cop = result[9]
+		#else:
+		#	cop_number = None
+		#	type_of_cop = None
 
 		# calculate distance to see what needs to be visible
 		distance = haversine(userlat, userlong, latitude, longitude)
 		if distance <= radius:
 			temp={
 				'id': currlocationid,
+				'post_id': result[6],
 				'postlat': latitude,
 				'postlong': longitude,
 				'location_name': location_name,
 				'description':result[3],
 				'date_reported':result[4],
 				'date_resolved':result[5],
-				'post_type': post_type_value,
-				'cop_number': cop_number,
-				'type_of_cop': type_of_cop,
+				'post_type': result[7],
+				'cop_number': result[8],
+				'type_of_cop': result[9]
 
 			}
 			locations.update({currlocationid:temp})
 			currlocationid+=1	
 
-	add_subway_stations(userlat, userlong, radius, locations, currlocationid)	
+	substation = add_subway_stations(userlat, userlong, radius, locations, currlocationid)	
 	cursor.close()
-	return jsonify(locations = locations)
+	return jsonify(locations = locations, substation = substation)
 
 def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 	# query subway stations from database
@@ -288,7 +290,8 @@ def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 	# WHERE P.location_name IS NULL;
 	subway_query = "SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type FROM Post P LEFT JOIN Subway_Station S ON S.subway_station_name = P.location_name WHERE P.location_name IS NULL"
 	cursor = g.conn.execute(text(subway_query))
-
+	substation= {}
+	currid=0
 	for result in cursor:
 		print(result)
 		latitude, longitude = result[0], result[1]
@@ -296,17 +299,19 @@ def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 
 		distance = haversine(userlat, userlong, latitude, longitude)
 		if distance <= radius:
-			locations[currlocationid] = {
-				'id': currlocationid,
+			temp = {
+				'id': currid,
 				'subwaylat': latitude,
 				'subwaylong': longitude,
 				'location_name': location_name,  
 				'color_visibility': result[3],
 				'post_type': result[4]
 			}
-			currlocationid += 1
+			substation.update({currid:temp})
+			currid += 1
 
 	cursor.close()
+	return substation
 
 		
 	
@@ -339,12 +344,10 @@ def modcheck():
 
 	perms_query="SELECT user_id FROM Moderator WHERE user_id = :usernum"
 	result = g.conn.execute(text(perms_query), {'usernum': usernum}).fetchone()
-	print(result)
 	if result:
 		perm='Y'
 	else:
 		perm='N'
-
 	if perm == 'Y':
 		return render_template('moderator.html')
 	else:
@@ -360,6 +363,7 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
+
 		if object[0] in subwayid:
 			postType='SUBWAY'
 			subwayrun = "SELECT cop_number FROM Subway_Post WHERE post_id = :post_id"
@@ -395,24 +399,44 @@ def modgen():
 		}
 		data.update({currid:temp})
 		currid+=1
+	result.close()
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
 
-@app.route ('/delete_post/<post_id>', methods =['GET','POST'])
-def delete_post(post_id=None):
-	delete_query = "DELETE FROM Post WHERE post_id = :post_id CASCADE"
-	g.conn.execute(text(delete_query), {'post_id': post_id})
-	g.conn.commit()
-	return render_template('moderator.html')
 
 @app.route('/toggle_vis/<post_id>', methods =['GET','POST'])
 def toggle_vis(post_id=None):
-	return print(post_id)
+	check_query = "SELECT visible FROM Post WHERE post_id = :post_id"
+	temp=g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
+	if temp[0]=='Y':
+		update_query = "UPDATE Post SET visible = 'N' WHERE post_id = :post_id"
+	else:
+		update_query = "UPDATE Post SET visible = 'Y'  WHERE post_id = :post_id"
+	g.conn.execute(text(update_query), {'post_id': post_id})
+	g.conn.commit()
+	return redirect('/modcheck')
 
 @app.route('/user_cred/<user_id>',methods =['GET','POST'])
 def user_cred(user_id=None):
-	return print(user_id)
+	check_query = "SELECT credibility FROM Users WHERE user_id = :user_id"
+	temp=g.conn.execute(text(check_query), {'user_id': user_id}).fetchone()
+	if temp[0]=='Y':
+		update_query = "UPDATE Users SET credibility = 'N' WHERE user_id = :user_id"
+	else:
+		update_query = "UPDATE Users SET credibility = 'Y'  WHERE user_id = :user_id"
+	g.conn.execute(text(update_query), {'user_id': user_id})
+	g.conn.commit()
+	return redirect('/modcheck')
+
+@app.route('/mark_resolved/<post_id>', methods=['GET','POST'])
+def mark_resolved(post_id=None):
+	print(post_id)
+	time_resolved_query = "UPDATE Post SET date_resolved = now() WHERE post_id = :post_id"
+	g.conn.execute(text(time_resolved_query), {'post_id': post_id})
+	g.conn.commit()
+	return redirect('/userlocation')
+
 
 @app.route('/add_location')
 def add_location():
