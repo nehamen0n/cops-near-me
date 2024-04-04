@@ -184,8 +184,7 @@
                   })
                     .setLngLat([location.postlong, location.postlat])
                     .addTo(map)
-                    .getElement();
-                  postMarker.classList.add("post-marker");
+                  postMarker.getElement().classList.add("post-marker");
 
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
