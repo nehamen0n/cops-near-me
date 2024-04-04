@@ -87,27 +87,17 @@
               console.log("sucess");
               clearMarkers();
 
-              for (const locationId in result.locations) {
-                if (Object.hasOwnProperty.call(result.locations, locationId)) {
-                  const location = result.locations[locationId];
+              for (const post_id in result.data) {
+                if (Object.hasOwnProperty.call(result.data, post_id)) {
+                  const postid = result.data[post_id];
 
                   // Check if location data is valid
-                  if (
-                    !location ||
-                    !location.location_name ||
-                    !location.postlong ||
-                    !location.postlat
-                  ) {
-                    console.error("Invalid location data:", location);
-                    continue;
-                  }
-
                   // Different color markers based on query
-                  console.log(location.post_type);
+                  console.log(data.post_id);
                   let markerColor = "#FF0000";
-                  if (location.post_type === "SUBWAY") {
+                  if (data.post_type === "SUBWAY") {
                     markerColor = "#00FF00"; // green for no cops
-                  } else if (location.post_type === "SIGHTING") {
+                  } else if (data.post_type === "SIGHTING") {
                     markerColor = "#0000FF"; // blue
                   }
 
@@ -115,20 +105,20 @@
                     color: markerColor,
                     draggable: false,
                   })
-                    .setLngLat([location.postlong, location.postlat])
+                    .setLngLat([data.postlong, data.postlat])
                     .addTo(map);
                   postMarker.getElement().classList.add("post-marker");
 
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-                    `<h3>${location.location_name}</h3>` +
-                      `<p>Description: ${location.description}</p>` +
-                      `<p>Date Reported: ${location.date_reported}</p>` +
-                      `<p>Date Resolved: ${location.date_resolved}</p>` +
-                      (location.cop_number !== undefined
+                    `<h3>${data.location_name}</h3>` +
+                      `<p>Description: ${data.description}</p>` +
+                      `<p>Date Reported: ${data.date_reported}</p>` +
+                      `<p>Date Resolved: ${data.date_resolved}</p>` +
+                      (data.cop_number !== undefined
                         ? `<p> Number of Cops: ${location.cop_number}</p>`
                         : " ") +
-                      (location.type_of_cop !== undefined
+                      (data.type_of_cop !== undefined
                         ? `<p>Type of Cops: ${location.type_of_cop}</p>`
                         : " ")
                   );
