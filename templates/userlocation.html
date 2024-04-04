@@ -202,18 +202,20 @@
                     var time_res_insert = `<p> <a href="/mark_resolved/${location.post_id}">Mark Resolved</a></p>`;
                   }
 
+                  if (location.type_of_cop !== null){
+                    var coptype = `<p>Type of Cops: ${location.type_of_cop}</p>`;
+                  }else{
+                    var coptype =``
+                  }
+
                   // Create a popup for the marker
                   const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                     `<h3>${location.location_name}</h3>` +
                       `<p>Description: ${location.description}</p>` +
                       `<p>Date Reported: ${location.date_reported}</p>` +
                       time_res_insert +
-                      (location.cop_number !== undefined
-                        ? `<p> Number of Cops: ${location.cop_number}</p>`
-                        : " ") +
-                      (location.type_of_cop !== undefined
-                        ? `<p>Type of Cops: ${location.type_of_cop}</p>`
-                        : " ")
+                      `<p> Number of Cops: ${location.cop_number}</p>` +
+                      coptype
                   );
                   postMarker.setPopup(popup);
                 }
