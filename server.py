@@ -324,15 +324,18 @@ def add_post():
 
 	add_query = "INSERT INTO Post (post_id, latitude, longitude, location_name, address, date_reported, date_resolved, visible, description, user_id) VALUES (:post_id, :postlat, :postlong, :location_name, :address, now(), NULL, 'y', :description, :user_id)"
 	g.conn.execute(text(add_query), {'post_id': post_id, 'postlat': postlat, 'postlong':postlong,'location_name':location_name,'address':address,'description':description, 'user_id': usernum})
+	g.conn.commit()
 
 	if post_type == 'Sighting':
 		sight_query= "INSERT INTO Sighting (post_id, user_id, cop_number, type_of_cop) VALUES (:post_id, :user_id, :cop_number, :type_of_cop)"
 		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops,'type_of_cop':typeOfCops})
+		g.conn.commit()
 	else:
 		sub_query= "INSERT INTO Subway_Post (post_id, user_id, cop_number) VALUES (:post_id, :user_id, :cop_number)"
 		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
+		g.conn.commit()
 
-	g.conn.commit()
+	
 	
 
 	return jsonify(json_data=json_data)
