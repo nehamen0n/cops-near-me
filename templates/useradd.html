@@ -129,7 +129,9 @@
           const description = document.getElementById("postdesc").value;
           const numberOfCops = document.getElementById("numberOfCops").value;
           const typeOfCops = document.getElementById("typeOfCops").value;
-          lngLat = usermarker.getLngLat();
+          var lngLat = usermarker.getLngLat();
+          var postlat=lngLat.lat;
+           var postlong=lngLat.lng;
 
           if (numberOfCops === "") {
             errordiv.innerHTML = "Please enter a number of cops";
@@ -145,8 +147,8 @@
               description: description,
               numberOfCops: numberOfCops,
               typeOfCops: typeOfCops,
-              postlat=lngLat.lat,
-              postlong=lngLat.lng
+              postlat=postlat,
+              postlong=postlong
             };
 
             $.ajax({
