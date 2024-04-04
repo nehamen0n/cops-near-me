@@ -215,6 +215,7 @@ def savelocation():
 
 	# retrieve specific sql query
 	select_query = post_queries.get(post_type)
+	print(post_type)
 
 	cursor = g.conn.execute(text(select_query))
 
