@@ -239,6 +239,7 @@ def savelocation():
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
 		post_type_value = result[6]
+		cop_number=None
 		
 		if post_type == 'Post':
 			if post_type_value == 'Sighting':
