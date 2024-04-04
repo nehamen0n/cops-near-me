@@ -263,7 +263,7 @@ def savelocation():
 		if distance <= radius:
 			temp={
 				'id': currlocationid,
-				'post_id':
+				'post_id': " ",
 				'postlat': latitude,
 				'postlong': longitude,
 				'location_name': location_name,
