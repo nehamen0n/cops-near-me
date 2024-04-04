@@ -164,6 +164,7 @@
               clearMarkers();
 
               // Create new markers for each location returned in the results
+              console.log(locations)
               for (const locationId in result.locations) {
                 if (Object.hasOwnProperty.call(result.locations, locationId)) {
                   const location = result.locations[locationId];
