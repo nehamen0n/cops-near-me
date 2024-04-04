@@ -325,18 +325,16 @@ def modgen():
 	select_query = "SELECT * FROM Post"
 	result = g.conn.execute(text(select_query))
 	subwaypostid_query = "SELECT post_id FROM Subway_Post"
-	subwayid = g.conn.execute(text(subwaypostid_query))
+	subwayid = [row[0] for row in g.conn.execute(text(subwaypostid_query))]
 	data={}
 	currid=0
 	for object in result:
-		for thing in subwayid:
-			print(object[0])
-			print(thing[0])
-			if object[0] == thing[0]:
-				postType='SUBWAY'
-				break
-			else:
-				postType ='SIGHTING'
+		
+		if object[0] in subwayid:
+			postType='SUBWAY'
+			break
+		else:
+			postType ='SIGHTING'
 
 		temp={
 			'post_id':object[0],
