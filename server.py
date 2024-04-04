@@ -187,7 +187,7 @@ def unumber():
 
     # If the phone number doesn't exist, insert a new row
 	if not result:
-		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'y')"
+		add_query = "INSERT INTO Users (user_id, latitude, longitude, credibility) VALUES (:usernum, NULL, NULL, 'Y')"
 		g.conn.execute(text(add_query), {'usernum': usernum})
 		g.conn.commit()
 	return jsonify(json_data=json_data)
