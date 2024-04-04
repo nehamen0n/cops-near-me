@@ -410,7 +410,15 @@ def toggle_vis(post_id=None):
 
 @app.route('/user_cred/<user_id>',methods =['GET','POST'])
 def user_cred(user_id=None):
-	return print(user_id)
+	check_query = "SELECT credibility FROM Users WHERE user_id = :user_id"
+	temp=g.conn.execute(text(check_query), {'user_id': user_id}).fetchone()
+	if temp[0]=='Y':
+		update_query = "UPDATE Users SET credibility = 'N' WHERE user_id = :user_id"
+	else:
+		update_query = "UPDATE Users SET credibility = 'Y'  WHERE user_id = :user_id"
+	g.conn.execute(text(update_query), {'user_id': user_id})
+	g.conn.commit()
+	return redirect('/modcheck')
 
 @app.route('/add_location')
 def add_location():
