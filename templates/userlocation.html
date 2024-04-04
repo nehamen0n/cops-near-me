@@ -82,14 +82,14 @@
 
         precinctButton.addEventListener("click", () => {
           // Toggle the 'active' class of the button
-          precinctButton.classList.toggle("btn-check:checked");
-          noPrecinctButton.classList.remove("btn-check:checked");
+          precinctButton.classList.toggle("active");
+          noPrecinctButton.classList.remove("active");
         });
 
         noPrecinctButton.addEventListener("click", () => {
           // Toggle the 'active' class of the button
-          noPrecinctButton.classList.toggle("btn-check:checked");
-          precinctButton.classList.remove("btn-check:checked");
+          noPrecinctButton.classList.toggle("active");
+          precinctButton.classList.remove("active");
         });
 
         const map = new mapboxgl.Map({
