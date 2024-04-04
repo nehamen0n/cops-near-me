@@ -339,14 +339,7 @@ def modgen():
 	data={}
 	currid=0
 	for object in result:
-		print(object[0])
-		print(object[1])
-		print(object[2])
-		print(object[3])
-		print(object[4])
-		print(object[5])
-		print(object[6])
-		print(object[7])
+		print(object)
 	# run uery to get all posts, and make dictionary of all posts
 	 # delete, send back all posts back to front end
 	return jsonify(data=data)
