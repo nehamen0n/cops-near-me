@@ -239,7 +239,6 @@ def savelocation():
 		location_name = result[2]
 		latitude, longitude = result[0], result[1]
 		post_type_value = result[6]
-		cop_number=None
 		
 		if post_type == 'Post':
 			if post_type_value == 'Sighting':
@@ -257,7 +256,7 @@ def savelocation():
 			type_of_cop = result[8]
 			subway_station_name = None
 			color_visibility = None
-		elif post_type == 'Subway':
+		else:
 			cop_number = None
 			type_of_cop = None
 			subway_station_name = result[7]
