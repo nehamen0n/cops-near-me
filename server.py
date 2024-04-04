@@ -14,6 +14,13 @@ from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response, url_for, jsonify
 import logging
+from random import randint, randrange
+from datetime import datetime, timezone
+
+def random_with_N_digits(n):
+    range_start = 10**(n-1)
+    range_end = (10**n)-1
+    return randint(range_start, range_end)
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -199,9 +206,14 @@ def savelocation():
 	userlong = json_data['userlong']
 	userlat = json_data['userlat']
 	radius = json_data['radius']
+	show_precinct=json_data['showPrecincts']
 
 	update_query = "UPDATE Users SET latitude = :userlat, longitude = :userlong WHERE user_id = :unum"
 	g.conn.execute(text(update_query), {'userlat': userlat, 'userlong': userlong, 'unum': usernum})
+
+	if show_precinct ==true:
+		precinct_query = "SELECT "
+	
 
 	# define dictionary of potential types of sql queries
 	post_queries = {
@@ -290,6 +302,35 @@ def add_location():
 def add_post():
 	global usernum
 	json_data = request.get_json()
+	location_name=json_data['locationName']
+	address=json_data['address']
+	description=json_data['description']
+	numberOfCops=json_data['numberOfCops']
+	typeOfCops=json_data['typeOfCops']
+	postlat=json_data['postlat']
+	postlong=json_data['postlong']
+	post_id= random_with_N_digits(8)
+	post_type=json_data['post_type']
+
+	check_query=  "SELECT post_id FROM Post WHERE post_id = :post_id"
+	result = g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
+
+	while result:
+		post_id= random_with_N_digits(8)
+		result = g.conn.execute(text(check_query), {'post_id': post_id}).fetchone()
+
+	add_query = "INSERT INTO Post (post_id, latitude, longitude, location_name, address, date_reported, date_resolved, visible, description, user_id) VALUES (:postid, :postlat, :postlong, :location_name, :address, now, NULL, 'y', :description, :user_id)"
+	g.conn.execute(text(add_query), {'post_id': post_id, 'postlat': postlat, 'postlong':postlong,'location_name':location_name,'address':address,'description':description, 'user_id': usernum})
+
+	if post_type == 'Sighting':
+		sight_query= "INSERT INTO Sighting (post_id, user_id, cop_number, type_of_cop) VALUES (:post_id, :user_id, :cop_number, :type_of_cop)"
+		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops,'type_of_cop':typeOfCops})
+	else:
+		sub_query= "INSERT INTO Subway_Post (post_id, user_id, cop_number) VALUES (:post_id, :user_id, :cop_number)"
+		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
+
+
+
 	return jsonify(json_data=json_data)
 
 
