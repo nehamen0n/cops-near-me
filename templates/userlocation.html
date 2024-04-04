@@ -178,8 +178,16 @@
                     continue;
                   }
 
+                  // Different color markers based on query
+                  let markerColor = "#FF0000";
+                  if (location.postType === "Subway") {
+                    markerColor = "#00FF00";
+                  } else if (location.postType === "Sighting") {
+                    markerColor = "#0000FF";
+                  }
+
                   const postMarker = new mapboxgl.Marker({
-                    color: "#FF0000",
+                    color: markerColor,
                     draggable: false,
                   })
                     .setLngLat([location.postlong, location.postlat])
@@ -194,11 +202,6 @@
                       `<p>Date Resolved: ${location.date_resolved}</p>`
                   );
 		              postMarker.setPopup(popup);
-                  /*
-                  postMarker.addEventListener("click", () => {
-                    popup.addTo(map);
-                  });
-                  */
                 }
               }
             },
