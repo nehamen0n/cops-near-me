@@ -77,21 +77,6 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        const precinctButton = document.getElementById("Precinct");
-        const noPrecinctButton = document.getElementById("noPrecinct");
-
-        precinctButton.addEventListener("click", () => {
-          // Toggle the 'active' class of the button
-          precinctButton.classList.toggle("active");
-          noPrecinctButton.classList.remove("active");
-        });
-
-        noPrecinctButton.addEventListener("click", () => {
-          // Toggle the 'active' class of the button
-          noPrecinctButton.classList.toggle("active");
-          precinctButton.classList.remove("active");
-        });
-
         const map = new mapboxgl.Map({
           container: "map",
           style: "mapbox://styles/mapbox/streets-v11",
@@ -136,11 +121,6 @@
               "Please select a post type.";
             return;
           }
-
-          let showPrecincts = precinctButton.classList.contains("active")
-            ? true
-            : false;
-          console.log(showPrecincts);
           // Clear any previous error messages;
           document.getElementById("error").textContent = "";
           lngLat = usermarker.getLngLat();
