@@ -501,7 +501,7 @@ def add_post():
 		g.conn.commit()
 	else:
 		sub_query= "INSERT INTO Subway_Post (post_id, user_id, cop_number) VALUES (:post_id, :user_id, :cop_number)"
-		g.conn.execute(text(sight_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
+		g.conn.execute(text(sub_query), {'post_id': post_id, 'user_id': usernum, 'cop_number': numberOfCops})
 		g.conn.commit()
 
 	
