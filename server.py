@@ -279,7 +279,7 @@ def savelocation():
 			currlocationid+=1	
 
 	substation = {}
-	#add_subway_stations(userlat, userlong, radius)	
+	add_subway_stations(userlat, userlong, radius)	
 	precinct= add_precint(userlat, userlong, radius)
 	cursor.close()
 	return jsonify(locations = locations, substation = substation, precinct=precinct)
