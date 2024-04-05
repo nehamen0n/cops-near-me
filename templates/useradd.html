@@ -129,8 +129,10 @@
           const address = document.getElementById("postaddy").value;
           const description = document.getElementById("postdesc").value;
           const numberOfCops = document.getElementById("numberOfCops").value;
-          const typeOfCops = document.getElementById("typeOfCops").value;
-          console.log(typeOfCops)
+          var typeOfCops = document.getElementById("typeOfCops").value;
+          if(typeOfCops === undefined){
+            typeOfCops=null;
+          }
           lngLat = usermarker.getLngLat();
 
           if (numberOfCops === "") {
