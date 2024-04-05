@@ -278,11 +278,13 @@ def savelocation():
 			locations.update({currlocationid:temp})
 			currlocationid+=1	
 
-	substation = add_subway_stations(userlat, userlong, radius, locations, currlocationid)	
+	substation = {}
+	#add_subway_stations(userlat, userlong, radius)	
+	precinct= add_precint(userlat, userlong, radius)
 	cursor.close()
-	return jsonify(locations = locations, substation = substation)
+	return jsonify(locations = locations, substation = substation, precinct=precinct)
 
-def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
+def add_subway_stations(userlat, userlong, radius):
 	# query subway stations from database
 	# SELECT P.latitude, P.longitude, S.subway_station_name, S.color_visibility, 'SUBWAY_STATION' AS post_type
 	# FROM Subway_Station S
@@ -312,6 +314,32 @@ def add_subway_stations(userlat, userlong, radius, locations, currlocationid):
 
 	cursor.close()
 	return substation
+
+def add_precint(userlat, userlong, radius):
+	# query subway stations from database
+	precinct_query = "SELECT latitude, longitude, precinct_name, precinct_number FROM Precinct"
+	cursor = g.conn.execute(text(precinct_query))
+	precinct= {}
+	currid=0
+	for result in cursor:
+		print(result)
+		latitude, longitude = result[0], result[1]
+		location_name = result[2]
+
+		distance = haversine(userlat, userlong, latitude, longitude)
+		if distance <= radius:
+			temp = {
+				'id': currid,
+				'prelat': latitude,
+				'prelong': longitude,
+				'pre_name': location_name,  
+				'pre_num': result[3]
+			}
+			precinct.update({currid:temp})
+			currid += 1
+
+	cursor.close()
+	return precinct
 
 		
 	
